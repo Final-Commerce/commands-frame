@@ -1,0 +1,33 @@
+{
+  "name": "iframe-actions",
+  "version": "0.0.1",
+  "description": "Iframe Actions library",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:clean": "rm -rf dist && npm run build",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "final commerce",
+    "finalpos",
+    "final",
+    "iframe",
+    "actions"
+  ],
+  "author": "Final Commerce",
+  "license": "UNLICENSED",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -63,7 +63,7 @@ export class IframeActionsClient {
                 this.pendingRequests.delete(requestId);
                 const error = new Error(`PostMessage request timeout: ${action} (${timeoutMs}ms)`);
                 if (this.isDebugEnabled()) {
-                    console.error("[ActionsClient] ⏱ Request timeout", {
+                    console.error("[ActionsClient] Request timeout", {
                         requestId,
                         action,
                         timeout: timeoutMs
@@ -85,7 +85,7 @@ export class IframeActionsClient {
             };
 
             if (this.isDebugEnabled()) {
-                console.log("[ActionsClient] → Sending request", {
+                console.log("[ActionsClient] Sending request", {
                     requestId,
                     action,
                     params,
@@ -101,7 +101,7 @@ export class IframeActionsClient {
                 this.pendingRequests.delete(requestId);
                 const error = new Error("No parent window found. This app must run in an iframe.");
                 if (this.isDebugEnabled()) {
-                    console.error("[ActionsClient] ✗ No parent window", error);
+                    console.error("[ActionsClient] No parent window", error);
                 }
                 reject(error);
             }
@@ -110,7 +110,7 @@ export class IframeActionsClient {
 
     private handleMessage(event: MessageEvent<PostMessageResponse>): void {
         if (this.isDebugEnabled()) {
-            console.log("[ActionsClient] ← Received message", {
+            console.log("[ActionsClient] Received message", {
                 origin: event.origin,
                 data: event.data,
                 timestamp: new Date().toISOString()
@@ -119,7 +119,7 @@ export class IframeActionsClient {
 
         if (this.origin !== "*" && event.origin !== this.origin) {
             if (this.isDebugEnabled()) {
-                console.warn("[ActionsClient] ⚠ Origin mismatch", {
+                console.warn("[ActionsClient] Origin mismatch", {
                     expected: this.origin,
                     received: event.origin
                 });
@@ -136,7 +136,7 @@ export class IframeActionsClient {
             this.pendingRequests.delete(response.requestId);
 
             if (this.isDebugEnabled()) {
-                console.log("[ActionsClient] ✓ Response received", {
+                console.log("[ActionsClient] Response received", {
                     requestId: response.requestId,
                     success: response.success,
                     data: response.data,
@@ -149,7 +149,7 @@ export class IframeActionsClient {
             } else {
                 const error = new Error(response.error || "Unknown error occurred");
                 if (this.isDebugEnabled()) {
-                    console.error("[ActionsClient] ✗ Request failed", {
+                    console.error("[ActionsClient] Request failed", {
                         requestId: response.requestId,
                         error: error.message
                     });
@@ -157,7 +157,7 @@ export class IframeActionsClient {
                 reject(error);
             }
         } else if (this.isDebugEnabled() && response && response.requestId) {
-            console.warn("[ActionsClient] ⚠ Unmatched response", {
+            console.warn("[ActionsClient] Unmatched response", {
                 requestId: response.requestId,
                 pendingRequests: Array.from(this.pendingRequests.keys())
             });

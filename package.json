@@ -1,6 +1,6 @@
 {
-    "name": "iframe-actions",
-    "version": "0.0.1",
+    "name": "@final-commerce/iframe-actions",
+    "version": "0.0.3",
     "description": "Iframe Actions library",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

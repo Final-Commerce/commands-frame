@@ -1,7 +1,7 @@
 {
-    "name": "@final-commerce/iframe-actions",
-    "version": "0.0.5",
-    "description": "Iframe Actions library",
+    "name": "@final-commerce/commands-frame",
+    "version": "0.0.7",
+    "description": "Commands Frame library",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "files": [
@@ -22,8 +22,8 @@
         "final commerce",
         "finalpos",
         "final",
-        "iframe",
-        "actions"
+        "commands",
+        "frame"
     ],
     "author": "Final Commerce",
     "license": "UNLICENSED",

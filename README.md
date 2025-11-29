@@ -1,11 +1,11 @@
-# @final-commerce/iframe-actions
+# @final-commerce/commands-frame
 
 A TypeScript library for communication between iframes and their parent windows using postMessage with type safety and error handling.
 
 ## Installation
 
 ```bash
-npm install @final-commerce/iframe-actions
+npm install @final-commerce/commands-frame
 ```
 
 **Note:** This package is published to GitHub Packages. Make sure you have access to the `@final-commerce` organization and have configured your `.npmrc` file:
@@ -18,7 +18,7 @@ npm install @final-commerce/iframe-actions
 ## Usage
 
 ```typescript
-import { externalActions } from '@final-commerce/iframe-actions';
+import { externalActions } from '@final-commerce/commands-frame';
 
 // Call an action on the parent window
 const result = await externalActions.exampleFunction({
@@ -65,9 +65,9 @@ A namespace object containing all available actions:
 For more control, you can use the client directly:
 
 ```typescript
-import { IframeActionsClient } from '@final-commerce/iframe-actions';
+import { CommandsFrameClient } from '@final-commerce/commands-frame';
 
-const client = new IframeActionsClient({
+const client = new CommandsFrameClient({
   timeout: 30000,  // 30 seconds
   origin: 'https://example.com'  // Specific origin (use '*' for any origin)
 });
@@ -81,7 +81,7 @@ Enable debug logging by setting the debug flag before importing:
 
 ```typescript
 (window as any).__POSTMESSAGE_DEBUG__ = true;
-import { externalActions } from '@final-commerce/iframe-actions';
+import { externalActions } from '@final-commerce/commands-frame';
 ```
 
 This will log all postMessage communication to the console.

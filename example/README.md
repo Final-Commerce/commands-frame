@@ -1,8 +1,8 @@
-# Example App for @final-commerce/iframe-actions
+# Example App for @final-commerce/commands-frame
 
-This is an example application demonstrating how to use the `@final-commerce/iframe-actions` library in a React + Vite application.
+This is an example application demonstrating how to use the `@final-commerce/commands-frame` library in a React + Vite application.
 
-**Note:** This example is based on a standard Vite + React + TypeScript template, with the `@final-commerce/iframe-actions` library added to demonstrate its usage.
+**Note:** This example is based on a standard Vite + React + TypeScript template, with the `@final-commerce/commands-frame` library added to demonstrate its usage.
 
 ## Overview
 
@@ -19,14 +19,14 @@ This example app shows how to:
 cd example
 ```
 
-2. Install dependencies (this will also install `@final-commerce/iframe-actions`):
+2. Install dependencies (this will also install `@final-commerce/commands-frame`):
 ```bash
 npm install
 ```
 
 **Note:** If you're adding this library to your own project, install it with:
 ```bash
-npm install @final-commerce/iframe-actions
+npm install @final-commerce/commands-frame
 ```
 
 3. Start the development server:
@@ -38,10 +38,10 @@ npm run dev
 
 ## Using the Library
 
-The example demonstrates using the `@final-commerce/iframe-actions` library:
+The example demonstrates using the `@final-commerce/commands-frame` library:
 
 ```typescript
-import { externalActions } from '@final-commerce/iframe-actions';
+import { externalActions } from '@final-commerce/commands-frame';
 
 // Call an action
 const result = await externalActions.exampleFunction({
@@ -116,7 +116,7 @@ example/
 ├── index.html                     # HTML template
 ├── vite.config.ts                 # Vite configuration
 ├── tsconfig.json                  # TypeScript configuration
-├── package.json                   # Dependencies (includes @final-commerce/iframe-actions)
+├── package.json                   # Dependencies (includes @final-commerce/commands-frame)
 └── README.md                      # This file
 ```
 

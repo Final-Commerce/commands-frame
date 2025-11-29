@@ -3,7 +3,7 @@
  * Each action is a typed function that calls the parent window
  */
 
-import { iframeActionsClient } from "./client";
+import { commandsFrameClient } from "./client";
 import type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, GetProducts, GetProductsParams, GetProductsResponse } from "./types";
 
 /**
@@ -11,7 +11,7 @@ import type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, G
  * Calls the exampleFunction action on the parent window
  */
 export const exampleFunction: ExampleFunction = async (params?: ExampleFunctionParams): Promise<ExampleFunctionResponse> => {
-    return await iframeActionsClient.call<ExampleFunctionParams, ExampleFunctionResponse>("exampleFunction", params);
+    return await commandsFrameClient.call<ExampleFunctionParams, ExampleFunctionResponse>("exampleFunction", params);
 };
 
 /**
@@ -19,5 +19,5 @@ export const exampleFunction: ExampleFunction = async (params?: ExampleFunctionP
  * Calls the getProducts action on the parent window
  */
 export const getProducts: GetProducts = async (params?: GetProductsParams): Promise<GetProductsResponse> => {
-    return await iframeActionsClient.call<GetProductsParams, GetProductsResponse>("getProducts", params);
+    return await commandsFrameClient.call<GetProductsParams, GetProductsResponse>("getProducts", params);
 };

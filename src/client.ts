@@ -1,5 +1,5 @@
 /**
- * Iframe Actions Client for iframe communication
+ * Commands Frame Client for iframe communication
  * Allows the iframe to call functions on the parent window via postMessage
  */
 
@@ -16,7 +16,7 @@ export interface PostMessageResponse<T = any> {
     error?: string;
 }
 
-export class IframeActionsClient {
+export class CommandsFrameClient {
     private pendingRequests: Map<
         string,
         {
@@ -171,7 +171,7 @@ export class IframeActionsClient {
     destroy(): void {
         this.pendingRequests.forEach(({ reject, timeout }) => {
             clearTimeout(timeout);
-            reject(new Error("IframeActionsClient destroyed"));
+            reject(new Error("CommandsFrameClient destroyed"));
         });
         this.pendingRequests.clear();
         window.removeEventListener("message", this.handleMessage.bind(this));
@@ -179,6 +179,6 @@ export class IframeActionsClient {
 }
 
 // Singleton instance
-export const iframeActionsClient = new IframeActionsClient({
+export const commandsFrameClient = new CommandsFrameClient({
     debug: typeof window !== "undefined" && (window as any).__POSTMESSAGE_DEBUG__ === true
 });

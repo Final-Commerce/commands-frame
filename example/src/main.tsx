@@ -1,4 +1,4 @@
-// Enable PostMessage debug logging - MUST be set before any imports that use iframeActionsClient
+// Enable PostMessage debug logging - MUST be set before any imports that use commandsFrameClient
 (window as any).__POSTMESSAGE_DEBUG__ = true;
 
 import React from 'react';

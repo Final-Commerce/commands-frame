@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { externalActions } from '@final-commerce/iframe-actions';
+import { externalActions } from '@final-commerce/commands-frame';
 
 interface Product {
   _id?: string;

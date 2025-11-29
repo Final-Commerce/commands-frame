@@ -8,5 +8,5 @@ export const externalActions = {
 
 export type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, GetProducts, GetProductsParams, GetProductsResponse };
 
-export { iframeActionsClient, IframeActionsClient } from "./client";
+export { commandsFrameClient, CommandsFrameClient } from "./client";
 export type { PostMessageRequest, PostMessageResponse } from "./client";

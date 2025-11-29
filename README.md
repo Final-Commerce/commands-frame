@@ -41,7 +41,7 @@ const products = await externalActions.getProducts({});
 
 ## Examples
 
-See the [example/](./example/) folder for a working React + Vite demo application that demonstrates how to use this library in a real-world scenario.
+See the [example/](https://github.com/Final-Commerce/commands-frame/tree/main/example) folder for a working React + Vite demo application that demonstrates how to use this library in a real-world scenario.
 
 To run the example:
 

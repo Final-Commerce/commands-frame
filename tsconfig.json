@@ -13,6 +13,6 @@
         "allowSyntheticDefaultImports": true,
         "lib": ["ES2020", "DOM"]
     },
-    "include": ["**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+    "include": ["src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules", "dist", "example", "**/*.test.ts", "**/*.test.tsx"]
 }

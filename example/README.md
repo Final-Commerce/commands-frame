@@ -25,8 +25,15 @@ npm install
 ```
 
 **Note:** If you're adding this library to your own project, install it with:
+
 ```bash
 npm install @final-commerce/commands-frame
+```
+
+Or if you don't have a `.npmrc` file configured:
+
+```bash
+npm install @final-commerce/commands-frame --registry=https://npm.pkg.github.com
 ```
 
 3. Start the development server:

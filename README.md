@@ -8,11 +8,22 @@ A TypeScript library for communication between iframes and their parent windows 
 npm install @final-commerce/commands-frame
 ```
 
-**Note:** This package is published to GitHub Packages. Make sure you have access to the `@final-commerce` organization and have configured your `.npmrc` file:
+**Note:** This package is published to GitHub Packages. You can install it in one of two ways:
+
+### Option 1: Using `.npmrc` (Recommended)
+
+Configure your `.npmrc` file:
 
 ```
 @final-commerce:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+### Option 2: Using `--registry` flag
+
+If you don't have a `.npmrc` file configured, you can specify the registry directly:
+
+```bash
+npm install @final-commerce/commands-frame --registry=https://npm.pkg.github.com
 ```
 
 ## Usage

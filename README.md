@@ -12,43 +12,48 @@ npm install @final-commerce/commands-frame
 
 ### Option 1: Using `.npmrc` (Recommended)
 
-Configure your `.npmrc` file:
+1. **Create a GitHub Personal Access Token:**
+   - Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+   - Click "Generate new token (classic)"
+   - Give it a descriptive name (e.g., "npm-packages")
+   - Select the following permissions:
+     - ✅ `read:packages` (required to download packages)
+   - Click "Generate token" and **copy the token immediately** (you won't be able to see it again)
 
-```
-@final-commerce:registry=https://npm.pkg.github.com
-```
+2. **Configure your `.npmrc` file:**
+
+   Add the following to your project's `.npmrc` file (or create one if it doesn't exist):
+
+   ```
+   @final-commerce:registry=https://npm.pkg.github.com
+   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+   ```
+
+   Replace `YOUR_GITHUB_TOKEN` with the token you created in step 1.
 
 ### Option 2: Using `--registry` flag
 
-If you don't have a `.npmrc` file configured, you can specify the registry directly:
-
+Alternatively, you can set the token using npm config and specify the registry directly:
 ```bash
+npm config set //npm.pkg.github.com/:_authToken your_token
 npm install @final-commerce/commands-frame --registry=https://npm.pkg.github.com
 ```
 
 ## Usage
 
 ```typescript
-import { externalActions } from '@final-commerce/commands-frame';
+import { commands } from '@final-commerce/commands-frame';
 
 // Call an action on the parent window
-const result = await externalActions.exampleFunction({
+const result = await commands.exampleFunction({
   param1: 'value1',
   param2: 'value2',
   param3: 'value3',
 });
 
 // Get products from parent window
-const products = await externalActions.getProducts({});
+const products = await commands.getProducts({});
 ```
-
-## Features
-
-- ✅ Type-safe action calls with TypeScript
-- ✅ Automatic error handling and timeouts
-- ✅ Promise-based API
-- ✅ Debug logging support
-- ✅ Origin validation for security
 
 ## Examples
 
@@ -64,27 +69,12 @@ npm run dev
 
 ## API
 
-### `externalActions`
+### `commands`
 
 A namespace object containing all available actions:
 
 - `exampleFunction(params?: ExampleFunctionParams): Promise<ExampleFunctionResponse>`
 - `getProducts(params?: GetProductsParams): Promise<GetProductsResponse>`
-
-### Advanced Usage
-
-For more control, you can use the client directly:
-
-```typescript
-import { CommandsFrameClient } from '@final-commerce/commands-frame';
-
-const client = new CommandsFrameClient({
-  timeout: 30000,  // 30 seconds
-  origin: 'https://example.com'  // Specific origin (use '*' for any origin)
-});
-
-const result = await client.call('actionName', params);
-```
 
 ## Debugging
 
@@ -92,7 +82,7 @@ Enable debug logging by setting the debug flag before importing:
 
 ```typescript
 (window as any).__POSTMESSAGE_DEBUG__ = true;
-import { externalActions } from '@final-commerce/commands-frame';
+import { commands } from '@final-commerce/commands-frame';
 ```
 
 This will log all postMessage communication to the console.

@@ -1,7 +1,7 @@
 import * as actions from "./actions";
 import type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, GetProducts, GetProductsParams, GetProductsResponse } from "./types";
 
-export const externalActions = {
+export const commands = {
     exampleFunction: actions.exampleFunction,
     getProducts: actions.getProducts
 } as const;

@@ -93,37 +93,10 @@ ngrok provides both by creating a secure tunnel to your local server.
    ```
 
 5. **Use the ngrok URL** in your parent page:
-   ```html
-   <iframe src="https://abc123.ngrok-free.app" width="100%" height="600"></iframe>
-   ```
+   
+   This example app is designed to work in an iframe element. Put the HTTPS URL from ngrok output to the iframe element settings page in your Build.
 
 **Note:** The free ngrok URL changes each time you restart ngrok. For a stable URL, consider using ngrok's paid plan or setting up a custom domain.
-
-## Features Demonstrated
-
-- ✅ Importing the library
-- ✅ Calling `exampleFunction` action
-- ✅ Calling `getProducts` action
-- ✅ Handling responses and errors
-- ✅ Displaying product data in a table
-- ✅ Iframe detection
-
-## Project Structure
-
-```
-example/
-├── src/
-│   ├── App.tsx                    # Main app component using the library
-│   ├── App.css                    # App styles
-│   ├── main.tsx                   # Entry point
-│   ├── index.css                  # Global styles
-│   └── vite-env.d.ts              # Vite type definitions
-├── index.html                     # HTML template
-├── vite.config.ts                 # Vite configuration
-├── tsconfig.json                  # TypeScript configuration
-├── package.json                   # Dependencies (includes @final-commerce/commands-frame)
-└── README.md                      # This file
-```
 
 ## Debugging
 
@@ -135,7 +108,3 @@ Enable debug logging by setting the debug flag before importing:
 ```
 
 This will log all postMessage communication to the console.
-
-## Parent Window Setup
-
-To use this example, you need a parent window that handles the postMessage requests. See the main library documentation for details on setting up the parent window to handle these actions.

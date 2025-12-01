@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { externalActions } from '@final-commerce/commands-frame';
+import { commands } from '@final-commerce/commands-frame';
 
 interface Product {
   _id?: string;
@@ -32,8 +32,8 @@ function App() {
     setProductsError('');
 
     try {
-      // Example: Call exampleFunction using externalActions namespace
-      const result = await externalActions.exampleFunction({
+      // Example: Call exampleFunction using commands namespace
+      const result = await commands.exampleFunction({
         param1: 'Pram1 value',
         param2: 'Pram2 value',
         param3: 'Pram3 value',
@@ -62,8 +62,8 @@ function App() {
     setResponse('');
 
     try {
-      // Example: Call getProducts using externalActions namespace
-      const result = await externalActions.getProducts({});
+      // Example: Call getProducts using commands namespace
+      const result = await commands.getProducts({});
       
       console.log('getProducts result:', result);
       

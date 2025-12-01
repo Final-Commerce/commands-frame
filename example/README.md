@@ -7,7 +7,7 @@ This is an example application demonstrating how to use the `@final-commerce/com
 ## Overview
 
 This example app shows how to:
-- Import and use the `externalActions` API from the library
+- Import and use the `commands` API from the library
 - Call actions on the parent window from within an iframe
 - Handle responses and errors
 - Display data received from parent window actions
@@ -24,17 +24,15 @@ cd example
 npm install
 ```
 
-**Note:** If you're adding this library to your own project, install it with:
+**Note:** If you're adding this library to your own project, you'll need to configure GitHub Packages authentication. See the [main README](../README.md#option-1-using-npmrc-recommended) for detailed instructions on setting up a GitHub token and configuring `.npmrc`.
+
+Once configured, install the package with:
 
 ```bash
 npm install @final-commerce/commands-frame
 ```
 
-Or if you don't have a `.npmrc` file configured:
-
-```bash
-npm install @final-commerce/commands-frame --registry=https://npm.pkg.github.com
-```
+Or if you prefer not to use `.npmrc`, see the [main README](../README.md#option-2-using---registry-flag) for instructions on using npm config for authentication.
 
 3. Start the development server:
 ```bash
@@ -48,17 +46,17 @@ npm run dev
 The example demonstrates using the `@final-commerce/commands-frame` library:
 
 ```typescript
-import { externalActions } from '@final-commerce/commands-frame';
+import { commands } from '@final-commerce/commands-frame';
 
 // Call an action
-const result = await externalActions.exampleFunction({
+const result = await commands.exampleFunction({
   param1: 'value1',
   param2: 'value2',
   param3: 'value3',
 });
 
 // Get products
-const products = await externalActions.getProducts({});
+const products = await commands.getProducts({});
 ```
 
 ## Testing in an Iframe

@@ -4,7 +4,7 @@
  */
 
 import { commandsFrameClient } from "./client";
-import type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, GetProducts, GetProductsParams, GetProductsResponse } from "./types";
+import type { ExampleFunction, ExampleFunctionParams, ExampleFunctionResponse, GetProducts, GetProductsParams, GetProductsResponse, AddCustomSale, AddCustomSaleParams, AddCustomSaleResponse } from "./types";
 
 /**
  * Example function action
@@ -20,4 +20,12 @@ export const exampleFunction: ExampleFunction = async (params?: ExampleFunctionP
  */
 export const getProducts: GetProducts = async (params?: GetProductsParams): Promise<GetProductsResponse> => {
     return await commandsFrameClient.call<GetProductsParams, GetProductsResponse>("getProducts", params);
+};
+
+/**
+ * Add custom sale action
+ * Calls the addCustomSale action on the parent window
+ */
+export const addCustomSale: AddCustomSale = async (params?: AddCustomSaleParams): Promise<AddCustomSaleResponse> => {
+    return await commandsFrameClient.call<AddCustomSaleParams, AddCustomSaleResponse>("addCustomSale", params);
 };

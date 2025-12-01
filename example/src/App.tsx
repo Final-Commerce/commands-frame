@@ -18,6 +18,11 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productsError, setProductsError] = useState<string>('');
+  const [customSaleLoading, setCustomSaleLoading] = useState(false);
+  const [customSaleResponse, setCustomSaleResponse] = useState<string>('');
+  const [customSaleLabel, setCustomSaleLabel] = useState<string>('Custom Item');
+  const [customSalePrice, setCustomSalePrice] = useState<string>('10.00');
+  const [applyTaxes, setApplyTaxes] = useState<boolean>(false);
   const isInIframe = window.self !== window.top;
 
   const handleCallAction = async () => {
@@ -110,6 +115,30 @@ function App() {
     return '';
   };
 
+  const handleAddCustomSale = async () => {
+    if (!isInIframe) {
+      setCustomSaleResponse('Error: Not running in iframe');
+      return;
+    }
+
+    setCustomSaleLoading(true);
+    setCustomSaleResponse('');
+
+    try {
+      const result = await commands.addCustomSale({
+        label: customSaleLabel,
+        price: parseFloat(customSalePrice) || 0,
+        applyTaxes: applyTaxes,
+      });
+      
+      setCustomSaleResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setCustomSaleResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setCustomSaleLoading(false);
+    }
+  };
+
   return (
     <div className="app">
       <div className="container">
@@ -134,6 +163,56 @@ function App() {
               >
                 {productsLoading ? 'Loading...' : 'Call GetProducts Action'}
               </button>
+            </div>
+            
+            <div style={{ marginTop: '20px', padding: '15px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
+              <h3 style={{ marginTop: 0 }}>Add Custom Sale</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Label:</label>
+                  <input
+                    type="text"
+                    value={customSaleLabel}
+                    onChange={(e) => setCustomSaleLabel(e.target.value)}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    placeholder="Custom sale label"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Price:</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={customSalePrice}
+                    onChange={(e) => setCustomSalePrice(e.target.value)}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    placeholder="0.00"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={applyTaxes}
+                      onChange={(e) => setApplyTaxes(e.target.checked)}
+                    />
+                    <span>Apply taxes</span>
+                  </label>
+                </div>
+              </div>
+              <button 
+                onClick={handleAddCustomSale} 
+                disabled={customSaleLoading}
+                style={{ width: '100%' }}
+              >
+                {customSaleLoading ? 'Adding...' : 'Add Custom Sale'}
+              </button>
+              {customSaleResponse && (
+                <div style={{ marginTop: '10px', padding: '10px', background: customSaleResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: customSaleResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                  <strong>{customSaleResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                  <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{customSaleResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                </div>
+              )}
             </div>
             {response && (
               <div style={{ marginTop: '10px', padding: '10px', background: '#f0f0f0', borderRadius: '4px', marginBottom: '10px' }}>

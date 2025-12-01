@@ -53,6 +53,13 @@ const result = await commands.exampleFunction({
 
 // Get products from parent window
 const products = await commands.getProducts({});
+
+// Add a custom sale to the cart
+const customSale = await commands.addCustomSale({
+  label: 'Custom Item',
+  price: 10.00,
+  applyTaxes: false,
+});
 ```
 
 ## Examples
@@ -75,6 +82,36 @@ A namespace object containing all available actions:
 
 - `exampleFunction(params?: ExampleFunctionParams): Promise<ExampleFunctionResponse>`
 - `getProducts(params?: GetProductsParams): Promise<GetProductsResponse>`
+- `addCustomSale(params?: AddCustomSaleParams): Promise<AddCustomSaleResponse>`
+
+### `addCustomSale`
+
+Adds a custom sale item to the cart in the parent window.
+
+**Parameters:**
+- `label` (string, required): The label/name for the custom sale
+- `price` (number | string, required): The price of the custom sale
+- `applyTaxes` (boolean, optional): Whether to apply taxes to the custom sale (default: false)
+
+**Returns:**
+```typescript
+{
+  success: boolean;
+  label: string;
+  price: number;
+  applyTaxes: boolean;
+  timestamp: string;
+}
+```
+
+**Example:**
+```typescript
+const result = await commands.addCustomSale({
+  label: 'Service Fee',
+  price: 5.50,
+  applyTaxes: true,
+});
+```
 
 ## Debugging
 

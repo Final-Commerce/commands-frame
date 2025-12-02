@@ -19,20 +19,14 @@ This example app shows how to:
 cd example
 ```
 
-2. Install dependencies (this will also install `@final-commerce/commands-frame`):
+2. Install dependencies:
+
 ```bash
 npm install
-```
-
-**Note:** If you're adding this library to your own project, you'll need to configure GitHub Packages authentication. See the [main README](../README.md#option-1-using-npmrc-recommended) for detailed instructions on setting up a GitHub token and configuring `.npmrc`.
-
-Once configured, install the package with:
-
-```bash
 npm install @final-commerce/commands-frame
 ```
 
-Or if you prefer not to use `.npmrc`, see the [main README](../README.md#option-2-using---registry-flag) for instructions on using npm config for authentication.
+**Note:** This package is available on the public NPM registry.
 
 3. Start the development server:
 ```bash
@@ -57,6 +51,16 @@ const result = await commands.exampleFunction({
 
 // Get products
 const products = await commands.getProducts({});
+
+// Get customers
+const customers = await commands.getCustomers({});
+
+// Add a custom sale
+await commands.addCustomSale({
+    label: 'Service',
+    price: 100,
+    applyTaxes: true
+});
 ```
 
 ## Testing in an Iframe

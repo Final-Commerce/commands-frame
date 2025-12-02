@@ -8,36 +8,7 @@ A TypeScript library for communication between iframes and their parent windows 
 npm install @final-commerce/commands-frame
 ```
 
-**Note:** This package is published to GitHub Packages. You can install it in one of two ways:
-
-### Option 1: Using `.npmrc` (Recommended)
-
-1. **Create a GitHub Personal Access Token:**
-   - Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
-   - Click "Generate new token (classic)"
-   - Give it a descriptive name (e.g., "npm-packages")
-   - Select the following permissions:
-     - ✅ `read:packages` (required to download packages)
-   - Click "Generate token" and **copy the token immediately** (you won't be able to see it again)
-
-2. **Configure your `.npmrc` file:**
-
-   Add the following to your project's `.npmrc` file (or create one if it doesn't exist):
-
-   ```
-   @final-commerce:registry=https://npm.pkg.github.com
-   //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-   ```
-
-   Replace `YOUR_GITHUB_TOKEN` with the token you created in step 1.
-
-### Option 2: Using `--registry` flag
-
-Alternatively, you can set the token using npm config and specify the registry directly:
-```bash
-npm config set //npm.pkg.github.com/:_authToken your_token
-npm install @final-commerce/commands-frame --registry=https://npm.pkg.github.com
-```
+This package is available on the public NPM registry.
 
 ## Usage
 
@@ -53,6 +24,23 @@ const result = await commands.exampleFunction({
 
 // Get products from parent window
 const products = await commands.getProducts({});
+
+// Get customers from parent window
+const customers = await commands.getCustomers({});
+
+// Add a new customer
+const newCustomer = await commands.addCustomer({
+  customer: {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+  },
+});
+
+// Assign a customer to the current session
+const assignedCustomer = await commands.assignCustomer({
+  customerId: 'customer-id-123',
+});
 
 // Add a custom sale to the cart
 const customSale = await commands.addCustomSale({
@@ -80,9 +68,12 @@ npm run dev
 
 A namespace object containing all available actions:
 
-- `exampleFunction(params?: ExampleFunctionParams): Promise<ExampleFunctionResponse>`
+- `addCustomSale(params: AddCustomSaleParams): Promise<AddCustomSaleResponse>`
 - `getProducts(params?: GetProductsParams): Promise<GetProductsResponse>`
-- `addCustomSale(params?: AddCustomSaleParams): Promise<AddCustomSaleResponse>`
+- `getCustomers(params?: GetCustomersParams): Promise<GetCustomersResponse>`
+- `addCustomer(params: AddCustomerParams): Promise<AddCustomerResponse>`
+- `assignCustomer(params: AssignCustomerParams): Promise<AssignCustomerResponse>`
+- `exampleFunction(params?: ExampleFunctionParams): Promise<ExampleFunctionResponse>`
 
 ### `addCustomSale`
 
@@ -104,13 +95,67 @@ Adds a custom sale item to the cart in the parent window.
 }
 ```
 
-**Example:**
+### `getProducts`
+
+Retrieves a list of products from the parent application.
+
+**Parameters:**
+- `query` (object, optional): Query parameters to filter products
+
+**Returns:**
 ```typescript
-const result = await commands.addCustomSale({
-  label: 'Service Fee',
-  price: 5.50,
-  applyTaxes: true,
-});
+{
+  products: Product[];
+  timestamp: string;
+}
+```
+
+### `getCustomers`
+
+Retrieves a list of customers from the parent application.
+
+**Parameters:**
+- `query` (object, optional): Query parameters to filter customers
+
+**Returns:**
+```typescript
+{
+  customers: Customer[];
+  total: number;
+  timestamp: string;
+}
+```
+
+### `addCustomer`
+
+Adds a new customer to the local database in the parent application.
+
+**Parameters:**
+- `customer` (object, required): Customer data object
+
+**Returns:**
+```typescript
+{
+  success: boolean;
+  customer: Customer;
+  timestamp: string;
+}
+```
+
+### `assignCustomer`
+
+Assigns an existing customer to the current active session/cart.
+
+**Parameters:**
+- `customerId` (string, required): The ID of the customer to assign
+
+**Returns:**
+```typescript
+{
+  success: boolean;
+  customer: Customer;
+  timestamp: string;
+}
 ```
 
 ## Debugging

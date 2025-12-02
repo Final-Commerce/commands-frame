@@ -23,6 +23,25 @@ function App() {
   const [customSaleLabel, setCustomSaleLabel] = useState<string>('Custom Item');
   const [customSalePrice, setCustomSalePrice] = useState<string>('10.00');
   const [applyTaxes, setApplyTaxes] = useState<boolean>(false);
+  
+  // New state for customer commands
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [customersLoading, setCustomersLoading] = useState(false);
+  const [customersError, setCustomersError] = useState<string>('');
+  
+  const [assignCustomerId, setAssignCustomerId] = useState<string>('');
+  const [assignCustomerLoading, setAssignCustomerLoading] = useState(false);
+  const [assignCustomerResponse, setAssignCustomerResponse] = useState<string>('');
+  
+  const [newCustomer, setNewCustomer] = useState({
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    phone: '1234567890'
+  });
+  const [addCustomerLoading, setAddCustomerLoading] = useState(false);
+  const [addCustomerResponse, setAddCustomerResponse] = useState<string>('');
+
   const isInIframe = window.self !== window.top;
 
   const handleCallAction = async () => {
@@ -54,7 +73,7 @@ function App() {
 
   const handleGetProducts = async () => {
     //try modal window
-    alert('Modal in window, try to open it');
+    // alert('Modal in window, try to open it');
 
     if (!isInIframe) {
       setProductsError('Error: Not running in iframe');
@@ -139,6 +158,86 @@ function App() {
     }
   };
 
+  const handleGetCustomers = async () => {
+    if (!isInIframe) {
+      setCustomersError('Error: Not running in iframe');
+      return;
+    }
+
+    setCustomersLoading(true);
+    setCustomers([]);
+    setCustomersError('');
+
+    try {
+      const result = await commands.getCustomers({});
+      
+      console.log('getCustomers result:', result);
+      
+      if (result && typeof result === 'object') {
+        if (result.customers && Array.isArray(result.customers)) {
+          setCustomers(result.customers);
+        } else {
+          setCustomersError(`Invalid response format. Expected customers array, got: ${JSON.stringify(result).substring(0, 100)}`);
+        }
+      } else {
+        setCustomersError('Invalid response format: result is not an object');
+      }
+    } catch (error) {
+      setCustomersError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setCustomersLoading(false);
+    }
+  };
+
+  const handleAssignCustomer = async () => {
+    if (!isInIframe) {
+      setAssignCustomerResponse('Error: Not running in iframe');
+      return;
+    }
+
+    if (!assignCustomerId) {
+      setAssignCustomerResponse('Error: Please enter a customer ID');
+      return;
+    }
+
+    setAssignCustomerLoading(true);
+    setAssignCustomerResponse('');
+
+    try {
+      const result = await commands.assignCustomer({
+        customerId: assignCustomerId
+      });
+      
+      setAssignCustomerResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setAssignCustomerResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setAssignCustomerLoading(false);
+    }
+  };
+
+  const handleAddCustomer = async () => {
+    if (!isInIframe) {
+      setAddCustomerResponse('Error: Not running in iframe');
+      return;
+    }
+
+    setAddCustomerLoading(true);
+    setAddCustomerResponse('');
+
+    try {
+      const result = await commands.addCustomer({
+        customer: newCustomer
+      });
+      
+      setAddCustomerResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setAddCustomerResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setAddCustomerLoading(false);
+    }
+  };
+
   return (
     <div className="app">
       <div className="container">
@@ -163,6 +262,102 @@ function App() {
               >
                 {productsLoading ? 'Loading...' : 'Call GetProducts Action'}
               </button>
+              <button 
+                onClick={handleGetCustomers} 
+                disabled={customersLoading}
+              >
+                {customersLoading ? 'Loading...' : 'Call GetCustomers Action'}
+              </button>
+            </div>
+            
+            {/* Customer Management Section */}
+            <div style={{ marginTop: '20px', padding: '15px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
+              <h3 style={{ marginTop: 0 }}>Customer Management</h3>
+              
+              {/* Assign Customer */}
+              <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}>
+                <h4>Assign Customer</h4>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Customer ID:</label>
+                    <input
+                      type="text"
+                      value={assignCustomerId}
+                      onChange={(e) => setAssignCustomerId(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="Enter Customer ID"
+                    />
+                  </div>
+                  <button 
+                    onClick={handleAssignCustomer} 
+                    disabled={assignCustomerLoading}
+                  >
+                    {assignCustomerLoading ? 'Assigning...' : 'Assign'}
+                  </button>
+                </div>
+                {assignCustomerResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: assignCustomerResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: assignCustomerResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{assignCustomerResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{assignCustomerResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
+
+              {/* Add Customer */}
+              <div>
+                <h4>Add New Customer</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px' }}>First Name</label>
+                    <input
+                      type="text"
+                      value={newCustomer.firstName}
+                      onChange={(e) => setNewCustomer({...newCustomer, firstName: e.target.value})}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px' }}>Last Name</label>
+                    <input
+                      type="text"
+                      value={newCustomer.lastName}
+                      onChange={(e) => setNewCustomer({...newCustomer, lastName: e.target.value})}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px' }}>Email</label>
+                    <input
+                      type="email"
+                      value={newCustomer.email}
+                      onChange={(e) => setNewCustomer({...newCustomer, email: e.target.value})}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontSize: '12px' }}>Phone</label>
+                    <input
+                      type="text"
+                      value={newCustomer.phone}
+                      onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                      style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                  </div>
+                </div>
+                <button 
+                  onClick={handleAddCustomer} 
+                  disabled={addCustomerLoading}
+                  style={{ width: '100%' }}
+                >
+                  {addCustomerLoading ? 'Adding...' : 'Add Customer'}
+                </button>
+                {addCustomerResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: addCustomerResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: addCustomerResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{addCustomerResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{addCustomerResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
             </div>
             
             <div style={{ marginTop: '20px', padding: '15px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
@@ -266,6 +461,46 @@ function App() {
                 </div>
               </div>
             )}
+            
+            {customersError && (
+              <div style={{ marginTop: '10px', padding: '10px', background: '#fee', borderRadius: '4px', color: '#c33' }}>
+                <strong>Error:</strong> {customersError}
+              </div>
+            )}
+            {customers.length > 0 && (
+              <div style={{ marginTop: '10px', overflowX: 'auto' }}>
+                <h3>Customers ({customers.length})</h3>
+                <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '4px' }}>
+                  <thead>
+                    <tr style={{ background: '#f0f0f0' }}>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Name</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Email</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Phone</th>
+                      <th style={{ padding: '10px', textAlign: 'right', borderBottom: '2px solid #ddd' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {customers.map((customer, index) => (
+                      <tr key={customer._id || customer.id || index} style={{ borderBottom: '1px solid #eee' }}>
+                        <td style={{ padding: '10px' }}>{customer.firstName} {customer.lastName}</td>
+                        <td style={{ padding: '10px' }}>{customer.email}</td>
+                        <td style={{ padding: '10px' }}>{customer.phone}</td>
+                        <td style={{ padding: '10px', textAlign: 'right' }}>
+                          <button 
+                            onClick={() => {
+                              setAssignCustomerId(customer._id || customer.id);
+                            }}
+                            style={{ padding: '4px 8px', fontSize: '12px' }}
+                          >
+                            Select
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
         
@@ -278,4 +513,3 @@ function App() {
 }
 
 export default App;
-

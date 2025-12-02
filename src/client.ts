@@ -37,7 +37,9 @@ export class CommandsFrameClient {
         this.debug = options.debug ?? false;
         this.useGlobalDebug = options.debug === undefined;
 
-        window.addEventListener("message", this.handleMessage.bind(this));
+        if (typeof window !== 'undefined') {
+            window.addEventListener("message", this.handleMessage.bind(this));
+        }
 
         if (this.isDebugEnabled()) {
             console.log("[ActionsClient] Initialized", {
@@ -94,7 +96,7 @@ export class CommandsFrameClient {
                 });
             }
 
-            if (window.parent) {
+            if (typeof window !== 'undefined' && window.parent) {
                 window.parent.postMessage(message, this.origin);
             } else {
                 clearTimeout(timeoutHandle);
@@ -174,7 +176,9 @@ export class CommandsFrameClient {
             reject(new Error("CommandsFrameClient destroyed"));
         });
         this.pendingRequests.clear();
-        window.removeEventListener("message", this.handleMessage.bind(this));
+        if (typeof window !== 'undefined') {
+            window.removeEventListener("message", this.handleMessage.bind(this));
+        }
     }
 }
 

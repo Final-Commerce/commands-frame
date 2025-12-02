@@ -46,3 +46,42 @@ export interface AddCustomSaleResponse {
 }
 
 export type AddCustomSale = (params?: AddCustomSaleParams) => Promise<AddCustomSaleResponse>;
+
+// Get Customers Types
+export interface GetCustomersParams {
+    query?: Record<string, any>;
+}
+
+export interface GetCustomersResponse {
+    customers: any[];
+    total?: number;
+    timestamp: string;
+}
+
+export type GetCustomers = (params?: GetCustomersParams) => Promise<GetCustomersResponse>;
+
+// Assign Customer Types
+export interface AssignCustomerParams {
+    customerId: string;
+}
+
+export interface AssignCustomerResponse {
+    success: boolean;
+    customer: any;
+    timestamp: string;
+}
+
+export type AssignCustomer = (params: AssignCustomerParams) => Promise<AssignCustomerResponse>;
+
+// Add Customer Types
+export interface AddCustomerParams {
+    customer: Record<string, any>;
+}
+
+export interface AddCustomerResponse {
+    success: boolean;
+    customer: any;
+    timestamp: string;
+}
+
+export type AddCustomer = (params: AddCustomerParams) => Promise<AddCustomerResponse>;

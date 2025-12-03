@@ -43,20 +43,20 @@ A MongoDB query object to filter customers. The handler supports text search acr
 
 ```typescript
 interface GetCustomersResponse {
-    customers: Customer[];
+    customers: any[];
     total?: number;
     timestamp: string;
 }
 ```
 
-#### `customers` (Customer[])
+#### `customers` (any[])
 
-Array of customer objects matching the query. Each customer object contains the following fields:
+Array of customer objects matching the query. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). A typical customer object may contain the following fields:
 
 ```typescript
+// Reference structure (actual structure may vary)
 interface Customer {
-    _id?: string;              // MongoDB ObjectId
-    id?: string;                // Alternative ID field
+    id?: string;                // ID field (structure depends on database)
     companyId?: string;         // Company identifier
     externalId?: string;        // External system ID
     email: string;              // Required: Customer email
@@ -64,10 +64,10 @@ interface Customer {
     lastName?: string;          // Last name
     phone?: string;             // Phone number
     tags?: string[];            // Customer tags
-    metadata?: CustomerMetadata[]; // Custom metadata
-    notes?: CustomerNote[];     // Customer notes
-    billing?: AddressDto;      // Billing address
-    shipping?: AddressDto;      // Shipping address
+    metadata?: Array<{ key: string; value: string }>; // Custom metadata
+    notes?: Array<{ createdAt: Date | string; message: string }>; // Customer notes
+    billing?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any }; // Billing address
+    shipping?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any }; // Shipping address
     totalSpent?: string;        // Total amount spent
     lastAction?: Date | string; // Last action timestamp
     outletId?: string;          // Associated outlet ID
@@ -154,13 +154,16 @@ const result = await commands.getCustomers({
 });
 ```
 
-## Customer Schema Reference
+## Customer Structure Reference
 
-The customer structure is based on the MongoDB schema defined in `station-sync/src/station-sync/schemas/customer.schema.ts`. Key fields:
+The customer structure may vary depending on the database implementation. The structure shown above is a reference based on the MongoDB schema. In practice, customer objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).
 
-- **Address fields**: `billing` and `shipping` follow the `AddressDto` structure with `address1`, `city`, `state`, `country`, `postCode`, etc.
+Key fields that may be present:
+
+- **Address fields**: `billing` and `shipping` typically contain address information with `address1`, `city`, `state`, `country`, `postCode`, etc.
 - **Metadata**: Array of key-value pairs for custom data.
 - **Notes**: Array of timestamped messages associated with the customer.
+- **ID fields**: The ID field structure depends on the database (may be `id`, `_id`, or other formats).
 
 ## Error Handling
 

@@ -116,19 +116,29 @@ All actions are fully typed with TypeScript. Import types for use in your code:
 import type {
     GetCustomersParams,
     GetCustomersResponse,
-    Customer,
+    GetCustomers,
     GetProductsParams,
     GetProductsResponse,
-    Product,
+    GetProducts,
     AddCustomerParams,
     AddCustomerResponse,
+    AddCustomer,
     AssignCustomerParams,
     AssignCustomerResponse,
+    AssignCustomer,
     AddCustomSaleParams,
-    AddCustomSaleResponse
+    AddCustomSaleResponse,
+    AddCustomSale,
+    ExampleFunctionParams,
+    ExampleFunctionResponse,
+    ExampleFunction
 } from '@final-commerce/commands-frame';
 ```
 
+**Note:** Entity data (customers, products) is returned as `any[]` or `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB). For detailed entity structures, refer to the action-specific documentation in the [Actions Documentation](#actions-documentation) section.
+
 ## License
 
-UNLICENSED
+MIT
+
+See [LICENSE](LICENSE) file for details.

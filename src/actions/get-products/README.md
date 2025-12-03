@@ -47,19 +47,19 @@ A MongoDB query object to filter products. The handler supports text search acro
 
 ```typescript
 interface GetProductsResponse {
-    products: Product[] | ProductWithVariants[];
+    products: any[];
     timestamp: string;
 }
 ```
 
-#### `products` (Product[] | ProductWithVariants[])
+#### `products` (any[])
 
-Array of product objects matching the query. Each product object contains the following fields:
+Array of product objects matching the query. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). A typical product object may contain the following fields:
 
 ```typescript
+// Reference structure (actual structure may vary)
 interface Product {
-    _id?: string;                    // MongoDB ObjectId
-    id?: string;                      // Alternative ID field
+    id?: string;                      // ID field (structure depends on database)
     companyId?: string;               // Company identifier
     externalId?: string;              // External system ID
     taxTable?: string;                // Tax table reference
@@ -68,10 +68,10 @@ interface Product {
     shortDescription?: string;        // Short description
     images?: string[];                // Product images URLs
     categories?: string[];             // Category IDs
-    attributes?: ProductAttribute[];   // Product attributes
+    attributes?: Array<{ name?: string; values: string[] }>;   // Product attributes
     tags?: string[];                  // Product tags
     supplier?: string;                // Supplier name
-    metadata?: ProductMetadata[];     // Custom metadata
+    metadata?: Array<{ key?: string; value?: string }>;     // Custom metadata
     fromOliver?: boolean;             // Source indicator
     sku?: string;                     // SKU code
     status?: string;                   // Product status
@@ -96,20 +96,20 @@ ISO 8601 timestamp string (e.g., `"2024-01-01T00:00:00.000Z"`) indicating when t
 If variants are included in the response, each product may have a `variants` array:
 
 ```typescript
+// Reference structure (actual structure may vary)
 interface Variant {
-    _id?: string;                     // MongoDB ObjectId
-    id?: string;                     // Alternative ID field
+    id?: string;                     // ID field (structure depends on database)
     companyId?: string;               // Company identifier
     productId: string;                // Parent product ID
     allowBackorder?: boolean;         // Allow backorder flag
-    attributes?: VariantAttribute[];  // Variant attributes
+    attributes?: Array<{ name?: string; value?: string }>;  // Variant attributes
     barcode?: string;                 // Barcode
     externalId?: string;              // External system ID
     images: string[];                 // Variant images
-    inventory?: VariantInventory[];   // Inventory per outlet
+    inventory?: Array<{ stock?: number; outletId?: string }>;   // Inventory per outlet
     manageStock?: boolean;           // Stock management flag
     isOnSale?: boolean;              // Sale status
-    metadata?: VariantMetadata[];    // Custom metadata
+    metadata?: Array<{ key?: string; value?: string }>;    // Custom metadata
     price?: string;                  // Regular price
     salePrice?: string;              // Sale price
     sku?: string;                    // Variant SKU
@@ -225,18 +225,17 @@ const result = await commands.getProducts({
 });
 ```
 
-## Product Schema Reference
+## Product Structure Reference
 
-The product structure is based on the MongoDB schemas defined in:
-- `station-sync/src/station-sync/schemas/product.schema.ts`
-- `station-sync/src/station-sync/schemas/variant.schema.ts`
+The product structure may vary depending on the database implementation. The structure shown above is a reference based on MongoDB schemas. In practice, product objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).
 
-Key fields:
+Key fields that may be present:
 
 - **Attributes**: Product attributes with name and values array.
 - **Metadata**: Array of key-value pairs for custom data.
 - **Variants**: Product variants with their own pricing, inventory, and attributes.
 - **Inventory**: Variant inventory is tracked per outlet in the `inventory` array.
+- **ID fields**: The ID field structure depends on the database (may be `id`, `_id`, or other formats).
 
 ## Error Handling
 

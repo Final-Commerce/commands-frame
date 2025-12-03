@@ -25,7 +25,7 @@ The ID of the customer to assign to the current session. Can be either:
 ```typescript
 interface AssignCustomerResponse {
     success: boolean;
-    customer: Customer;
+    customer: any;
     timestamp: string;
 }
 ```
@@ -34,14 +34,14 @@ interface AssignCustomerResponse {
 
 Indicates whether the customer was successfully assigned to the session.
 
-#### `customer` (Customer)
+#### `customer` (any)
 
-The customer object that was assigned to the session. This is the complete customer record retrieved from the database, including all customer fields:
+The customer object that was assigned to the session. This is the complete customer record retrieved from the database. The structure depends on the database implementation. A typical customer object may contain:
 
 ```typescript
-interface Customer {
-    _id?: string;
-    id?: string;
+// Reference structure (actual structure may vary)
+{
+    id?: string;  // ID field (structure depends on database)
     companyId?: string;
     externalId?: string;
     email: string;
@@ -49,10 +49,10 @@ interface Customer {
     lastName?: string;
     phone?: string;
     tags?: string[];
-    metadata?: CustomerMetadata[];
-    notes?: CustomerNote[];
-    billing?: AddressDto;
-    shipping?: AddressDto;
+    metadata?: Array<{ key: string; value: string }>;
+    notes?: Array<{ createdAt: Date | string; message: string }>;
+    billing?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any };
+    shipping?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any };
     totalSpent?: string;
     lastAction?: Date | string;
     outletId?: string;
@@ -104,14 +104,17 @@ const searchResult = await commands.getCustomers({
 
 if (searchResult.customers.length > 0) {
     const customer = searchResult.customers[0];
-    const customerId = customer._id || customer.id;
+    // ID field structure depends on database (may be id, _id, or other formats)
+    const customerId = customer.id || customer._id || customer['$loki'];
     
-    // Assign the found customer
-    const assignResult = await commands.assignCustomer({
-        customerId: customerId!
-    });
-    
-    console.log('Assigned customer:', assignResult.customer.firstName);
+    if (customerId) {
+        // Assign the found customer
+        const assignResult = await commands.assignCustomer({
+            customerId: customerId
+        });
+        
+        console.log('Assigned customer:', assignResult.customer.firstName);
+    }
 }
 ```
 
@@ -151,7 +154,9 @@ let customerId: string;
 
 if (searchResult.customers.length > 0) {
     // Customer exists, use their ID
-    customerId = searchResult.customers[0]._id || searchResult.customers[0].id!;
+    // ID field structure depends on database (may be id, _id, or other formats)
+    const customer = searchResult.customers[0];
+    customerId = customer.id || customer._id || customer['$loki'] || '';
 } else {
     // Create new customer
     const newCustomer = await commands.addCustomer({
@@ -161,7 +166,9 @@ if (searchResult.customers.length > 0) {
             lastName: 'Customer'
         }
     });
-    customerId = newCustomer.customer._id || newCustomer.customer.id!;
+    // ID field structure depends on database
+    const createdCustomer = newCustomer.customer;
+    customerId = createdCustomer.id || createdCustomer._id || createdCustomer['$loki'] || '';
 }
 
 // Step 2: Assign customer to session
@@ -219,6 +226,6 @@ try {
 - The customer must exist in the local database before assignment
 - Deleted customers (`isDeleted: true`) cannot be assigned
 - The assignment updates the active customer in the Redux store
-- The customer ID can be either `_id` (MongoDB ObjectId) or `id` (alternative ID field)
+- The customer ID structure depends on the database implementation (may be `id`, `_id`, `$loki`, or other formats)
 - After assignment, the customer is available for the current session until a new customer is assigned or the session is cleared
 

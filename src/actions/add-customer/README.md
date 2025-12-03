@@ -8,29 +8,15 @@ Adds a new customer to the local database in the parent application.
 
 ```typescript
 interface AddCustomerParams {
-    customer: {
-        email: string;              // Required
-        firstName?: string;
-        lastName?: string;
-        phone?: string;
-        tags?: string[];
-        metadata?: CustomerMetadata[];
-        notes?: CustomerNote[];
-        billing?: AddressDto;
-        shipping?: AddressDto;
-        totalSpent?: string;
-        lastAction?: Date | string;
-        outletId?: string;
-        externalId?: string;
-        fromOliver?: boolean;
-        [key: string]: any;
-    };
+    customer: Record<string, any>;
 }
 ```
 
 #### `customer` (required)
 
-The customer object to create. Only `email` is required; all other fields are optional.
+The customer object to create. The type is `Record<string, any>` to allow flexibility between different database implementations. Only `email` is required; all other fields are optional.
+
+**Typical customer structure:**
 
 **Required fields:**
 
@@ -42,10 +28,10 @@ The customer object to create. Only `email` is required; all other fields are op
 - `lastName` (string): Customer's last name.
 - `phone` (string): Customer's phone number.
 - `tags` (string[]): Array of tags to associate with the customer.
-- `metadata` (CustomerMetadata[]): Custom metadata as key-value pairs.
-- `notes` (CustomerNote[]): Array of notes associated with the customer.
-- `billing` (AddressDto): Billing address information.
-- `shipping` (AddressDto): Shipping address information.
+- `metadata` (Array<{ key: string; value: string }>): Custom metadata as key-value pairs.
+- `notes` (Array<{ createdAt: Date | string; message: string }>): Array of notes associated with the customer.
+- `billing` (object): Billing address information (see Address Structure below).
+- `shipping` (object): Shipping address information (see Address Structure below).
 - `totalSpent` (string): Total amount the customer has spent.
 - `lastAction` (Date | string): Timestamp of the customer's last action.
 - `outletId` (string): ID of the outlet associated with the customer.
@@ -54,10 +40,11 @@ The customer object to create. Only `email` is required; all other fields are op
 
 ### Address Structure
 
-Both `billing` and `shipping` follow the `AddressDto` structure:
+Both `billing` and `shipping` typically follow this structure:
 
 ```typescript
-interface AddressDto {
+// Reference structure
+{
     firstName?: string;
     lastName?: string;
     company?: string;
@@ -73,7 +60,8 @@ interface AddressDto {
 ### Metadata Structure
 
 ```typescript
-interface CustomerMetadata {
+// Reference structure
+{
     key: string;    // Required
     value: string;  // Required
 }
@@ -82,7 +70,8 @@ interface CustomerMetadata {
 ### Notes Structure
 
 ```typescript
-interface CustomerNote {
+// Reference structure
+{
     createdAt: Date | string;  // Required
     message: string;           // Required
 }
@@ -95,7 +84,7 @@ interface CustomerNote {
 ```typescript
 interface AddCustomerResponse {
     success: boolean;
-    customer: Customer;
+    customer: any;
     timestamp: string;
 }
 ```
@@ -104,16 +93,15 @@ interface AddCustomerResponse {
 
 Indicates whether the customer was successfully created.
 
-#### `customer` (Customer)
+#### `customer` (any)
 
-The created customer object, including all fields from the request plus automatically generated fields:
-- `_id`: MongoDB ObjectId string
-- `id`: Alternative ID field (if applicable)
+The created customer object, including all fields from the request plus automatically generated fields. The structure depends on the database implementation:
+- `id` or `_id`: ID field (structure depends on database - MongoDB uses `_id`, LokiJS/IndexedDB may use `id`)
 - `createdAt`: Creation timestamp
 - `updatedAt`: Last update timestamp
 - `fromOliver`: Default value based on system configuration (if not provided)
 
-The customer object matches the `Customer` interface structure with all fields properly typed.
+The customer object is returned as `any` to allow flexibility between different database implementations.
 
 #### `timestamp` (string)
 
@@ -305,8 +293,9 @@ Common error scenarios:
 
 ## Notes
 
-- The customer is created in the local IndexedDB database
-- Generated fields (`_id`, `createdAt`, `updatedAt`) are automatically added
+- The customer is created in the local IndexedDB database (LokiJS)
+- Generated fields (ID field, `createdAt`, `updatedAt`) are automatically added
+- The ID field structure depends on the database implementation (may be `id`, `_id`, or other formats)
 - The `fromOliver` field defaults based on the system configuration
 - Customer data is synchronized with the central MongoDB database via station-sync
 

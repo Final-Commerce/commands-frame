@@ -16,7 +16,7 @@ export const commands = {
     addCustomer
 } as const;
 
-// Export types from action folders
+// Export types from action folders (only Params, Response, and Function types)
 export type {
     ExampleFunction,
     ExampleFunctionParams,
@@ -26,15 +26,7 @@ export type {
 export type {
     GetProducts,
     GetProductsParams,
-    GetProductsResponse,
-    Product,
-    ProductWithVariants,
-    Variant,
-    ProductAttribute,
-    ProductMetadata,
-    VariantAttribute,
-    VariantInventory,
-    VariantMetadata
+    GetProductsResponse
 } from "./actions/get-products/types";
 
 export type {
@@ -46,11 +38,7 @@ export type {
 export type {
     GetCustomers,
     GetCustomersParams,
-    GetCustomersResponse,
-    Customer,
-    AddressDto,
-    CustomerMetadata,
-    CustomerNote
+    GetCustomersResponse
 } from "./actions/get-customers/types";
 
 export type {

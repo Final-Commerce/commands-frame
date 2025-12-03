@@ -2,20 +2,10 @@ import { useState } from 'react';
 import './App.css';
 import { commands } from '@final-commerce/commands-frame';
 
-interface Product {
-  _id?: string;
-  id?: string;
-  name?: string;
-  images?: string[];
-  variants?: Array<{ price?: number; [key: string]: any }>;
-  sourceId?: string;
-  [key: string]: any;
-}
-
 function App() {
   const [response, setResponse] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productsError, setProductsError] = useState<string>('');
   const [customSaleLoading, setCustomSaleLoading] = useState(false);
@@ -28,6 +18,11 @@ function App() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [customersLoading, setCustomersLoading] = useState(false);
   const [customersError, setCustomersError] = useState<string>('');
+  
+  // New state for category commands
+  const [categories, setCategories] = useState<any[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [categoriesError, setCategoriesError] = useState<string>('');
   
   const [assignCustomerId, setAssignCustomerId] = useState<string>('');
   const [assignCustomerLoading, setAssignCustomerLoading] = useState(false);
@@ -109,12 +104,12 @@ function App() {
     }
   };
 
-  const getProductPrice = (product: Product): string => {
+  const getProductPrice = (product: any): string => {
     if (product.variants && product.variants.length > 0) {
       const prices = product.variants
-        .map(v => v.price)
-        .filter(p => p != null && !isNaN(Number(p)))
-        .map(p => Number(p));
+        .map((v: any) => v.price)
+        .filter((p: any): p is string => p != null && !isNaN(Number(p)))
+        .map((p: string) => Number(p));
       
       if (prices.length > 0) {
         const minPrice = Math.min(...prices);
@@ -127,7 +122,7 @@ function App() {
     return 'N/A';
   };
 
-  const getProductImage = (product: Product): string => {
+  const getProductImage = (product: any): string => {
     if (product.images && product.images.length > 0) {
       return product.images[0];
     }
@@ -238,6 +233,37 @@ function App() {
     }
   };
 
+  const handleGetCategories = async () => {
+    if (!isInIframe) {
+      setCategoriesError('Error: Not running in iframe');
+      return;
+    }
+
+    setCategoriesLoading(true);
+    setCategories([]);
+    setCategoriesError('');
+
+    try {
+      const result = await commands.getCategories({});
+      
+      console.log('getCategories result:', result);
+      
+      if (result && typeof result === 'object') {
+        if (result.categories && Array.isArray(result.categories)) {
+          setCategories(result.categories);
+        } else {
+          setCategoriesError(`Invalid response format. Expected categories array, got: ${JSON.stringify(result).substring(0, 100)}`);
+        }
+      } else {
+        setCategoriesError('Invalid response format: result is not an object');
+      }
+    } catch (error) {
+      setCategoriesError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
+
   return (
     <div className="app">
       <div className="container">
@@ -267,6 +293,12 @@ function App() {
                 disabled={customersLoading}
               >
                 {customersLoading ? 'Loading...' : 'Call GetCustomers Action'}
+              </button>
+              <button 
+                onClick={handleGetCategories} 
+                disabled={categoriesLoading}
+              >
+                {categoriesLoading ? 'Loading...' : 'Call GetCategories Action'}
               </button>
             </div>
             
@@ -499,6 +531,40 @@ function App() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+            
+            {categoriesError && (
+              <div style={{ marginTop: '10px', padding: '10px', background: '#fee', borderRadius: '4px', color: '#c33' }}>
+                <strong>Error:</strong> {categoriesError}
+              </div>
+            )}
+            {categories.length > 0 && (
+              <div style={{ marginTop: '10px', overflowX: 'auto' }}>
+                <h3>Categories ({categories.length})</h3>
+                <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '4px' }}>
+                  <thead>
+                    <tr style={{ background: '#f0f0f0' }}>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Name</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Parent ID</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>External ID</th>
+                      <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {categories.map((category, index) => (
+                      <tr key={category._id || category.id || index} style={{ borderBottom: '1px solid #eee' }}>
+                        <td style={{ padding: '10px' }}>{category.name || 'Unnamed Category'}</td>
+                        <td style={{ padding: '10px' }}>{category.parentId || '—'}</td>
+                        <td style={{ padding: '10px' }}>{category.externalId || '—'}</td>
+                        <td style={{ padding: '10px', fontSize: '12px', color: '#666' }}>{category._id || category.id || 'N/A'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ marginTop: '10px', padding: '10px', background: '#f0f0f0', borderRadius: '4px', textAlign: 'center' }}>
+                  <strong>Total: {categories.length} categories</strong>
+                </div>
               </div>
             )}
           </div>

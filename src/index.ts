@@ -1,54 +1,70 @@
-import * as actions from "./actions";
-import type {
-    ExampleFunction,
-    ExampleFunctionParams,
-    ExampleFunctionResponse,
-    GetProducts,
-    GetProductsParams,
-    GetProductsResponse,
-    AddCustomSale,
-    AddCustomSaleParams,
-    AddCustomSaleResponse,
-    GetCustomers,
-    GetCustomersParams,
-    GetCustomersResponse,
-    AssignCustomer,
-    AssignCustomerParams,
-    AssignCustomerResponse,
-    AddCustomer,
-    AddCustomerParams,
-    AddCustomerResponse
-} from "./types";
+// Import actions from new folder structure
+import { exampleFunction } from "./actions/example-function/action";
+import { getProducts } from "./actions/get-products/action";
+import { addCustomSale } from "./actions/add-custom-sale/action";
+import { getCustomers } from "./actions/get-customers/action";
+import { assignCustomer } from "./actions/assign-customer/action";
+import { addCustomer } from "./actions/add-customer/action";
 
+// Export actions as commands object
 export const commands = {
-    exampleFunction: actions.exampleFunction,
-    getProducts: actions.getProducts,
-    addCustomSale: actions.addCustomSale,
-    getCustomers: actions.getCustomers,
-    assignCustomer: actions.assignCustomer,
-    addCustomer: actions.addCustomer
+    exampleFunction,
+    getProducts,
+    addCustomSale,
+    getCustomers,
+    assignCustomer,
+    addCustomer
 } as const;
 
+// Export types from action folders
 export type {
     ExampleFunction,
     ExampleFunctionParams,
-    ExampleFunctionResponse,
+    ExampleFunctionResponse
+} from "./actions/example-function/types";
+
+export type {
     GetProducts,
     GetProductsParams,
     GetProductsResponse,
+    Product,
+    ProductWithVariants,
+    Variant,
+    ProductAttribute,
+    ProductMetadata,
+    VariantAttribute,
+    VariantInventory,
+    VariantMetadata
+} from "./actions/get-products/types";
+
+export type {
     AddCustomSale,
     AddCustomSaleParams,
-    AddCustomSaleResponse,
+    AddCustomSaleResponse
+} from "./actions/add-custom-sale/types";
+
+export type {
     GetCustomers,
     GetCustomersParams,
     GetCustomersResponse,
+    Customer,
+    AddressDto,
+    CustomerMetadata,
+    CustomerNote
+} from "./actions/get-customers/types";
+
+export type {
     AssignCustomer,
     AssignCustomerParams,
-    AssignCustomerResponse,
+    AssignCustomerResponse
+} from "./actions/assign-customer/types";
+
+export type {
     AddCustomer,
     AddCustomerParams,
     AddCustomerResponse
-};
+} from "./actions/add-customer/types";
 
+// Export client
 export { commandsFrameClient, CommandsFrameClient } from "./client";
 export type { PostMessageRequest, PostMessageResponse } from "./client";

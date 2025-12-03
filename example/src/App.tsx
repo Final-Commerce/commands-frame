@@ -24,6 +24,12 @@ function App() {
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [categoriesError, setCategoriesError] = useState<string>('');
   
+  // New state for product variants commands
+  const [variants, setVariants] = useState<any[]>([]);
+  const [variantsLoading, setVariantsLoading] = useState(false);
+  const [variantsError, setVariantsError] = useState<string>('');
+  const [variantProductId, setVariantProductId] = useState<string>('');
+  
   const [assignCustomerId, setAssignCustomerId] = useState<string>('');
   const [assignCustomerLoading, setAssignCustomerLoading] = useState(false);
   const [assignCustomerResponse, setAssignCustomerResponse] = useState<string>('');
@@ -264,6 +270,44 @@ function App() {
     }
   };
 
+  const handleGetProductVariants = async () => {
+    if (!isInIframe) {
+      setVariantsError('Error: Not running in iframe');
+      return;
+    }
+
+    if (!variantProductId) {
+      setVariantsError('Error: Please enter a product ID');
+      return;
+    }
+
+    setVariantsLoading(true);
+    setVariants([]);
+    setVariantsError('');
+
+    try {
+      const result = await commands.getProductVariants({
+        productId: variantProductId
+      });
+      
+      console.log('getProductVariants result:', result);
+      
+      if (result && typeof result === 'object') {
+        if (result.variants && Array.isArray(result.variants)) {
+          setVariants(result.variants);
+        } else {
+          setVariantsError(`Invalid response format. Expected variants array, got: ${JSON.stringify(result).substring(0, 100)}`);
+        }
+      } else {
+        setVariantsError('Invalid response format: result is not an object');
+      }
+    } catch (error) {
+      setVariantsError(error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setVariantsLoading(false);
+    }
+  };
+
   return (
     <div className="app">
       <div className="container">
@@ -463,29 +507,50 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {products.map((product, index) => (
-                      <tr key={product._id || product.id || index} style={{ borderBottom: '1px solid #eee' }}>
-                        <td style={{ padding: '10px' }}>
-                          {getProductImage(product) ? (
-                            <img 
-                              src={getProductImage(product)} 
-                              alt={product.name || 'Product'} 
-                              style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <div style={{ width: '50px', height: '50px', background: '#f0f0f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '12px' }}>
-                              No img
-                            </div>
-                          )}
-                        </td>
-                        <td style={{ padding: '10px' }}>{product.name || 'Unnamed Product'}</td>
-                        <td style={{ padding: '10px', textAlign: 'right' }}>{getProductPrice(product)}</td>
-                        <td style={{ padding: '10px' }}>{product.source || ''}</td>
-                      </tr>
-                    ))}
+                    {products.map((product, index) => {
+                      const productId = product._id || product.id;
+                      return (
+                        <tr 
+                          key={productId || index} 
+                          style={{ 
+                            borderBottom: '1px solid #eee',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s'
+                          }}
+                          onClick={() => {
+                            if (productId) {
+                              setVariantProductId(productId);
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f5f5f5';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          <td style={{ padding: '10px' }}>
+                            {getProductImage(product) ? (
+                              <img 
+                                src={getProductImage(product)} 
+                                alt={product.name || 'Product'} 
+                                style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div style={{ width: '50px', height: '50px', background: '#f0f0f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '12px' }}>
+                                No img
+                              </div>
+                            )}
+                          </td>
+                          <td style={{ padding: '10px' }}>{product.name || 'Unnamed Product'}</td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>{getProductPrice(product)}</td>
+                          <td style={{ padding: '10px' }}>{product.source || ''}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
                 <div style={{ marginTop: '10px', padding: '10px', background: '#f0f0f0', borderRadius: '4px', textAlign: 'center' }}>
@@ -567,6 +632,64 @@ function App() {
                 </div>
               </div>
             )}
+            
+            {/* Get Product Variants Section */}
+            <div style={{ marginTop: '20px', padding: '15px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
+              <h3 style={{ marginTop: 0 }}>Get Product Variants</h3>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', marginBottom: '10px' }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Product ID:</label>
+                  <input
+                    type="text"
+                    value={variantProductId}
+                    onChange={(e) => setVariantProductId(e.target.value)}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    placeholder="Enter Product ID"
+                  />
+                </div>
+                <button 
+                  onClick={handleGetProductVariants} 
+                  disabled={variantsLoading}
+                >
+                  {variantsLoading ? 'Loading...' : 'Get Variants'}
+                </button>
+              </div>
+              {variantsError && (
+                <div style={{ marginTop: '10px', padding: '10px', background: '#fee', borderRadius: '4px', color: '#c33' }}>
+                  <strong>Error:</strong> {variantsError}
+                </div>
+              )}
+              {variants.length > 0 && (
+                <div style={{ marginTop: '10px', overflowX: 'auto' }}>
+                  <h4>Variants ({variants.length})</h4>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '4px' }}>
+                    <thead>
+                      <tr style={{ background: '#f0f0f0' }}>
+                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Name/SKU</th>
+                        <th style={{ padding: '10px', textAlign: 'right', borderBottom: '2px solid #ddd' }}>Price</th>
+                        <th style={{ padding: '10px', textAlign: 'right', borderBottom: '2px solid #ddd' }}>Sale Price</th>
+                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>Barcode</th>
+                        <th style={{ padding: '10px', textAlign: 'left', borderBottom: '2px solid #ddd' }}>ID</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {variants.map((variant, index) => (
+                        <tr key={variant._id || variant.id || index} style={{ borderBottom: '1px solid #eee' }}>
+                          <td style={{ padding: '10px' }}>{variant.name || variant.sku || 'Unnamed Variant'}</td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>{variant.price ? `$${parseFloat(variant.price).toFixed(2)}` : '—'}</td>
+                          <td style={{ padding: '10px', textAlign: 'right' }}>{variant.salePrice ? `$${parseFloat(variant.salePrice).toFixed(2)}` : '—'}</td>
+                          <td style={{ padding: '10px' }}>{variant.barcode || '—'}</td>
+                          <td style={{ padding: '10px', fontSize: '12px', color: '#666' }}>{variant._id || variant.id || 'N/A'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div style={{ marginTop: '10px', padding: '10px', background: '#f0f0f0', borderRadius: '4px', textAlign: 'center' }}>
+                    <strong>Total: {variants.length} variants</strong>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         )}
         

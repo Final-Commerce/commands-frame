@@ -6,6 +6,7 @@ import { getCustomers } from "./actions/get-customers/action";
 import { assignCustomer } from "./actions/assign-customer/action";
 import { addCustomer } from "./actions/add-customer/action";
 import { getCategories } from "./actions/get-categories/action";
+import { getProductVariants } from "./actions/get-product-variants/action";
 
 // Export actions as commands object
 export const commands = {
@@ -15,7 +16,8 @@ export const commands = {
     getCustomers,
     assignCustomer,
     addCustomer,
-    getCategories
+    getCategories,
+    getProductVariants
 } as const;
 
 // Export types from action folders (only Params, Response, and Function types)
@@ -60,6 +62,12 @@ export type {
     GetCategoriesParams,
     GetCategoriesResponse
 } from "./actions/get-categories/types";
+
+export type {
+    GetProductVariants,
+    GetProductVariantsParams,
+    GetProductVariantsResponse
+} from "./actions/get-product-variants/types";
 
 // Export client
 export { commandsFrameClient, CommandsFrameClient } from "./client";

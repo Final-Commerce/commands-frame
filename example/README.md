@@ -55,11 +55,34 @@ const products = await commands.getProducts({});
 // Get customers
 const customers = await commands.getCustomers({});
 
+// Get categories
+const categories = await commands.getCategories({});
+
+// Get product variants
+const variants = await commands.getProductVariants({
+    productId: 'product-id-123'
+});
+
 // Add a custom sale
 await commands.addCustomSale({
     label: 'Service',
     price: 100,
     applyTaxes: true
+});
+
+// Set product active, add discount, and add to cart
+await commands.setProductActive({
+    variantId: 'variant-id-123'
+});
+
+await commands.addProductDiscount({
+    amount: 10,
+    isPercent: false,
+    label: 'Discount'
+});
+
+await commands.addProductToCart({
+    quantity: 2
 });
 ```
 

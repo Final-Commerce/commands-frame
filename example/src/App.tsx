@@ -30,6 +30,21 @@ function App() {
   const [variantsError, setVariantsError] = useState<string>('');
   const [variantProductId, setVariantProductId] = useState<string>('');
   
+  // New state for product actions
+  const [variantId, setVariantId] = useState<string>('');
+  const [setProductActiveLoading, setSetProductActiveLoading] = useState(false);
+  const [setProductActiveResponse, setSetProductActiveResponse] = useState<string>('');
+  
+  const [discountAmount, setDiscountAmount] = useState<string>('10');
+  const [discountIsPercent, setDiscountIsPercent] = useState<boolean>(false);
+  const [discountLabel, setDiscountLabel] = useState<string>('Discount');
+  const [addDiscountLoading, setAddDiscountLoading] = useState(false);
+  const [addDiscountResponse, setAddDiscountResponse] = useState<string>('');
+  
+  const [addToCartLoading, setAddToCartLoading] = useState(false);
+  const [addToCartResponse, setAddToCartResponse] = useState<string>('');
+  const [addToCartQuantity, setAddToCartQuantity] = useState<string>('1');
+  
   const [assignCustomerId, setAssignCustomerId] = useState<string>('');
   const [assignCustomerLoading, setAssignCustomerLoading] = useState(false);
   const [assignCustomerResponse, setAssignCustomerResponse] = useState<string>('');
@@ -305,6 +320,85 @@ function App() {
       setVariantsError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setVariantsLoading(false);
+    }
+  };
+
+  const handleSetProductActive = async () => {
+    if (!isInIframe) {
+      setSetProductActiveResponse('Error: Not running in iframe');
+      return;
+    }
+
+    if (!variantId) {
+      setSetProductActiveResponse('Error: Please enter a variant ID');
+      return;
+    }
+
+    setSetProductActiveLoading(true);
+    setSetProductActiveResponse('');
+
+    try {
+      const result = await commands.setProductActive({
+        variantId: variantId
+      });
+      
+      setSetProductActiveResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setSetProductActiveResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setSetProductActiveLoading(false);
+    }
+  };
+
+  const handleAddProductDiscount = async () => {
+    if (!isInIframe) {
+      setAddDiscountResponse('Error: Not running in iframe');
+      return;
+    }
+
+    if (!discountAmount) {
+      setAddDiscountResponse('Error: Please enter a discount amount');
+      return;
+    }
+
+    setAddDiscountLoading(true);
+    setAddDiscountResponse('');
+
+    try {
+      const result = await commands.addProductDiscount({
+        amount: parseFloat(discountAmount) || 0,
+        isPercent: discountIsPercent,
+        label: discountLabel
+      });
+      
+      setAddDiscountResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setAddDiscountResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setAddDiscountLoading(false);
+    }
+  };
+
+  const handleAddProductToCart = async () => {
+    if (!isInIframe) {
+      setAddToCartResponse('Error: Not running in iframe');
+      return;
+    }
+
+    setAddToCartLoading(true);
+    setAddToCartResponse('');
+
+    try {
+      const quantity = parseFloat(addToCartQuantity) || 1;
+      const result = await commands.addProductToCart({
+        quantity: quantity
+      });
+      
+      setAddToCartResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setAddToCartResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setAddToCartLoading(false);
     }
   };
 
@@ -673,15 +767,36 @@ function App() {
                       </tr>
                     </thead>
                     <tbody>
-                      {variants.map((variant, index) => (
-                        <tr key={variant._id || variant.id || index} style={{ borderBottom: '1px solid #eee' }}>
-                          <td style={{ padding: '10px' }}>{variant.name || variant.sku || 'Unnamed Variant'}</td>
-                          <td style={{ padding: '10px', textAlign: 'right' }}>{variant.price ? `$${parseFloat(variant.price).toFixed(2)}` : '—'}</td>
-                          <td style={{ padding: '10px', textAlign: 'right' }}>{variant.salePrice ? `$${parseFloat(variant.salePrice).toFixed(2)}` : '—'}</td>
-                          <td style={{ padding: '10px' }}>{variant.barcode || '—'}</td>
-                          <td style={{ padding: '10px', fontSize: '12px', color: '#666' }}>{variant._id || variant.id || 'N/A'}</td>
-                        </tr>
-                      ))}
+                      {variants.map((variant, index) => {
+                        const variantIdValue = variant._id || variant.id;
+                        return (
+                          <tr 
+                            key={variantIdValue || index} 
+                            style={{ 
+                              borderBottom: '1px solid #eee',
+                              cursor: 'pointer',
+                              transition: 'background-color 0.2s'
+                            }}
+                            onClick={() => {
+                              if (variantIdValue) {
+                                setVariantId(variantIdValue);
+                              }
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#f5f5f5';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
+                          >
+                            <td style={{ padding: '10px' }}>{variant.name || variant.sku || 'Unnamed Variant'}</td>
+                            <td style={{ padding: '10px', textAlign: 'right' }}>{variant.price ? `$${parseFloat(variant.price).toFixed(2)}` : '—'}</td>
+                            <td style={{ padding: '10px', textAlign: 'right' }}>{variant.salePrice ? `$${parseFloat(variant.salePrice).toFixed(2)}` : '—'}</td>
+                            <td style={{ padding: '10px' }}>{variant.barcode || '—'}</td>
+                            <td style={{ padding: '10px', fontSize: '12px', color: '#666' }}>{variantIdValue || 'N/A'}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                   <div style={{ marginTop: '10px', padding: '10px', background: '#f0f0f0', borderRadius: '4px', textAlign: 'center' }}>
@@ -689,6 +804,126 @@ function App() {
                   </div>
                 </div>
               )}
+            </div>
+            
+            {/* Product Actions Section */}
+            <div style={{ marginTop: '20px', padding: '15px', background: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
+              <h3 style={{ marginTop: 0 }}>Product Actions</h3>
+              
+              {/* Set Product Active */}
+              <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}>
+                <h4>Set Product/Variant Active</h4>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', marginBottom: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Variant ID:</label>
+                    <input
+                      type="text"
+                      value={variantId}
+                      onChange={(e) => setVariantId(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="Enter Variant ID"
+                    />
+                  </div>
+                  <button 
+                    onClick={handleSetProductActive} 
+                    disabled={setProductActiveLoading}
+                  >
+                    {setProductActiveLoading ? 'Setting...' : 'Set Active'}
+                  </button>
+                </div>
+                {setProductActiveResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: setProductActiveResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: setProductActiveResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{setProductActiveResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{setProductActiveResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
+
+              {/* Add Product Discount */}
+              <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}>
+                <h4>Add Discount to Active Product</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Discount Amount:</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={discountAmount}
+                      onChange={(e) => setDiscountAmount(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Label:</label>
+                    <input
+                      type="text"
+                      value={discountLabel}
+                      onChange={(e) => setDiscountLabel(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="Discount label"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={discountIsPercent}
+                        onChange={(e) => setDiscountIsPercent(e.target.checked)}
+                      />
+                      <span>Is Percentage</span>
+                    </label>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleAddProductDiscount} 
+                  disabled={addDiscountLoading}
+                  style={{ width: '100%' }}
+                >
+                  {addDiscountLoading ? 'Adding...' : 'Add Discount'}
+                </button>
+                {addDiscountResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: addDiscountResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: addDiscountResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{addDiscountResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{addDiscountResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
+
+              {/* Add Product to Cart */}
+              <div>
+                <h4>Add Active Product to Cart</h4>
+                <div style={{ marginBottom: '10px' }}>
+                  <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Quantity:</label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={addToCartQuantity}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '' || (/^\d+$/.test(value) && parseFloat(value) >= 1)) {
+                        setAddToCartQuantity(value);
+                      }
+                    }}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    placeholder="1"
+                  />
+                </div>
+                <button 
+                  onClick={handleAddProductToCart} 
+                  disabled={addToCartLoading}
+                  style={{ width: '100%' }}
+                >
+                  {addToCartLoading ? 'Adding...' : 'Add to Cart'}
+                </button>
+                {addToCartResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: addToCartResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: addToCartResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{addToCartResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{addToCartResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

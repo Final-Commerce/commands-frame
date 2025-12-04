@@ -1,30 +1,33 @@
 import { useState } from 'react';
 import './App.css';
 import { Sidebar, SectionId } from './components/Sidebar';
+import { EnvironmentSection } from './components/sections/EnvironmentSection';
+import { CategoriesSection } from './components/sections/CategoriesSection';
 import { ProductsSection } from './components/sections/ProductsSection';
 import { CustomersSection } from './components/sections/CustomersSection';
-import { CategoriesSection } from './components/sections/CategoriesSection';
 import { CartSection } from './components/sections/CartSection';
 import { ExamplesSection } from './components/sections/ExamplesSection';
 
 function App() {
-  const [activeSection, setActiveSection] = useState<SectionId>('products');
+  const [activeSection, setActiveSection] = useState<SectionId>('environment');
   const isInIframe = window.self !== window.top;
 
   const renderSection = () => {
     switch (activeSection) {
+      case 'environment':
+        return <EnvironmentSection isInIframe={isInIframe} />;
+      case 'categories':
+        return <CategoriesSection isInIframe={isInIframe} />;
       case 'products':
         return <ProductsSection isInIframe={isInIframe} />;
       case 'customers':
         return <CustomersSection isInIframe={isInIframe} />;
-      case 'categories':
-        return <CategoriesSection isInIframe={isInIframe} />;
       case 'cart':
         return <CartSection isInIframe={isInIframe} />;
       case 'examples':
         return <ExamplesSection isInIframe={isInIframe} />;
       default:
-        return <ProductsSection isInIframe={isInIframe} />;
+        return <EnvironmentSection isInIframe={isInIframe} />;
     }
   };
 

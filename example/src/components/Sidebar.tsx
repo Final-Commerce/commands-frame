@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import './Sidebar.css';
 
 export type SectionId = 
+  | 'environment'
+  | 'categories'
   | 'products'
   | 'customers'
-  | 'categories'
   | 'cart'
   | 'examples';
 
@@ -20,9 +21,10 @@ interface Section {
 }
 
 const sections: Section[] = [
+  { id: 'environment', label: 'Environment' },
+  { id: 'categories', label: 'Categories' },
   { id: 'products', label: 'Products' },
   { id: 'customers', label: 'Customers' },
-  { id: 'categories', label: 'Categories' },
   { id: 'cart', label: 'Cart Operations' },
   { id: 'examples', label: 'Examples' },
 ];

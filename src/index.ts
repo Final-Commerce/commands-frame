@@ -7,6 +7,7 @@ import { assignCustomer } from "./actions/assign-customer/action";
 import { addCustomer } from "./actions/add-customer/action";
 import { getCategories } from "./actions/get-categories/action";
 import { getProductVariants } from "./actions/get-product-variants/action";
+import { addCartDiscount } from "./actions/add-cart-discount/action";
 import { setProductActive } from "./actions/set-product-active/action";
 import { addProductDiscount } from "./actions/add-product-discount/action";
 import { addProductToCart } from "./actions/add-product-to-cart/action";
@@ -23,7 +24,8 @@ export const commands = {
     getProductVariants,
     setProductActive,
     addProductDiscount,
-    addProductToCart
+    addProductToCart,
+    addCartDiscount
 } as const;
 
 // Export types from action folders (only Params, Response, and Function types)
@@ -92,6 +94,12 @@ export type {
     AddProductToCartParams,
     AddProductToCartResponse
 } from "./actions/add-product-to-cart/types";
+
+export type {
+    AddCartDiscount,
+    AddCartDiscountParams,
+    AddCartDiscountResponse
+} from "./actions/add-cart-discount/types";
 
 // Export client
 export { commandsFrameClient, CommandsFrameClient } from "./client";

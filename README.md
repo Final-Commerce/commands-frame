@@ -36,6 +36,7 @@ The library provides a `commands` namespace object containing all available acti
 - **[setProductActive](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/set-product-active/README.md)** - Set a product variant as the active product
 - **[addProductDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-discount/README.md)** - Add a discount to the currently active product
 - **[addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)** - Add the currently active product to the cart
+- **[addCartDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-discount/README.md)** - Add a discount to the entire cart
 - **[exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)** - Example/template function (for reference only)
 
 For detailed documentation on each action, including parameter descriptions, response structures, and usage examples, see the [Actions Documentation](#actions-documentation) section below.
@@ -80,6 +81,13 @@ await commands.addProductDiscount({
 
 await commands.addProductToCart({
     quantity: 2
+});
+
+// Add cart discount
+await commands.addCartDiscount({
+    amount: 10,
+    isPercent: false,
+    label: 'Promotion Discount'
 });
 ```
 
@@ -128,6 +136,10 @@ Adds a discount to the currently active product. Supports both fixed amount and 
 ### [addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)
 
 Adds the currently active product to the cart. Supports specifying quantity. The product must be set as active first.
+
+### [addCartDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-discount/README.md)
+
+Adds a discount to the entire cart. Supports both fixed amount and percentage discounts. Applies to the cart subtotal and affects all items.
 
 ### [exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)
 
@@ -196,6 +208,9 @@ import type {
     AddProductToCartParams,
     AddProductToCartResponse,
     AddProductToCart,
+    AddCartDiscountParams,
+    AddCartDiscountResponse,
+    AddCartDiscount,
     ExampleFunctionParams,
     ExampleFunctionResponse,
     ExampleFunction

@@ -28,9 +28,14 @@ The library provides a `commands` namespace object containing all available acti
 
 - **[getCustomers](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-customers/README.md)** - Retrieve a list of customers from the parent application
 - **[getProducts](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-products/README.md)** - Retrieve a list of products from the parent application
+- **[getCategories](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-categories/README.md)** - Retrieve a list of categories from the parent application
+- **[getProductVariants](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-product-variants/README.md)** - Retrieve all variants for a specific product
 - **[addCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-customer/README.md)** - Add a new customer to the local database
 - **[assignCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/assign-customer/README.md)** - Assign an existing customer to the current session/cart
 - **[addCustomSale](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-custom-sale/README.md)** - Add a custom sale item to the cart
+- **[setProductActive](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/set-product-active/README.md)** - Set a product variant as the active product
+- **[addProductDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-discount/README.md)** - Add a discount to the currently active product
+- **[addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)** - Add the currently active product to the cart
 - **[exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)** - Example/template function (for reference only)
 
 For detailed documentation on each action, including parameter descriptions, response structures, and usage examples, see the [Actions Documentation](#actions-documentation) section below.
@@ -48,6 +53,33 @@ const customers = await commands.getCustomers({
     query: {
         email: 'customer@example.com'
     }
+});
+
+// Get categories from parent window
+const categories = await commands.getCategories({
+    query: {
+        parentId: null  // Get top-level categories
+    }
+});
+
+// Get variants for a product
+const variants = await commands.getProductVariants({
+    productId: 'product-id-123'
+});
+
+// Set a variant as active, add discount, then add to cart
+await commands.setProductActive({
+    variantId: 'variant-id-123'
+});
+
+await commands.addProductDiscount({
+    amount: 10,
+    isPercent: false,
+    label: 'Special Discount'
+});
+
+await commands.addProductToCart({
+    quantity: 2
 });
 ```
 
@@ -73,9 +105,29 @@ Adds a new customer to the local database in the parent application. Supports fu
 
 Assigns an existing customer to the current active session/cart. The customer must exist in the local database.
 
+### [getCategories](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-categories/README.md)
+
+Retrieves a list of categories from the parent application's local database. Supports filtering by name, parent ID, and external ID.
+
+### [getProductVariants](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-product-variants/README.md)
+
+Retrieves all variants for a specific product from the parent application's local database. Useful for displaying variant options or selecting a specific variant.
+
 ### [addCustomSale](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-custom-sale/README.md)
 
 Adds a custom sale item to the cart in the parent window. Useful for adding non-product items like service fees, discounts, or custom charges.
+
+### [setProductActive](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/set-product-active/README.md)
+
+Sets a product variant as the active product in the parent application. Required before adding discounts or adding products to cart.
+
+### [addProductDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-discount/README.md)
+
+Adds a discount to the currently active product. Supports both fixed amount and percentage discounts. The product must be set as active first.
+
+### [addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)
+
+Adds the currently active product to the cart. Supports specifying quantity. The product must be set as active first.
 
 ### [exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)
 
@@ -120,6 +172,12 @@ import type {
     GetProductsParams,
     GetProductsResponse,
     GetProducts,
+    GetCategoriesParams,
+    GetCategoriesResponse,
+    GetCategories,
+    GetProductVariantsParams,
+    GetProductVariantsResponse,
+    GetProductVariants,
     AddCustomerParams,
     AddCustomerResponse,
     AddCustomer,
@@ -129,6 +187,15 @@ import type {
     AddCustomSaleParams,
     AddCustomSaleResponse,
     AddCustomSale,
+    SetProductActiveParams,
+    SetProductActiveResponse,
+    SetProductActive,
+    AddProductDiscountParams,
+    AddProductDiscountResponse,
+    AddProductDiscount,
+    AddProductToCartParams,
+    AddProductToCartResponse,
+    AddProductToCart,
     ExampleFunctionParams,
     ExampleFunctionResponse,
     ExampleFunction

@@ -37,6 +37,7 @@ The library provides a `commands` namespace object containing all available acti
 - **[addProductDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-discount/README.md)** - Add a discount to the currently active product
 - **[addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)** - Add the currently active product to the cart
 - **[addCartDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-discount/README.md)** - Add a discount to the entire cart
+- **[getContext](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-context/README.md)** - Get current environment/context information (user, company, device, station, outlet, build)
 - **[exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)** - Example/template function (for reference only)
 
 For detailed documentation on each action, including parameter descriptions, response structures, and usage examples, see the [Actions Documentation](#actions-documentation) section below.
@@ -81,6 +82,12 @@ await commands.addCartDiscount({
     isPercent: false,
     label: 'Cart Discount'
 });
+
+// Get current context/environment
+const context = await commands.getContext();
+console.log('Current user:', context.userId);
+console.log('Current company:', context.companyName);
+console.log('Current build:', context.buildName);
 ```
 
 For complete usage examples and detailed parameter descriptions, see the documentation for each action in the [Actions Documentation](#actions-documentation) section.
@@ -132,6 +139,10 @@ Adds the currently active product to the cart. Supports specifying quantity. The
 ### [addCartDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-discount/README.md)
 
 Adds a discount to the entire cart. Supports both fixed amount and percentage discounts. Applies to the cart subtotal and affects all items.
+
+### [getContext](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-context/README.md)
+
+Retrieves the current environment/context information from the parent application. Returns user, company, device, station, outlet, and build information including IDs, names, and other relevant details.
 
 ### [exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)
 
@@ -203,6 +214,8 @@ import type {
     AddCartDiscountParams,
     AddCartDiscountResponse,
     AddCartDiscount,
+    GetContext,
+    GetContextResponse,
     ExampleFunctionParams,
     ExampleFunctionResponse,
     ExampleFunction

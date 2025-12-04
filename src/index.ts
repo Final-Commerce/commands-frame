@@ -9,6 +9,7 @@ import { getCategories } from "./actions/get-categories/action";
 import { getProductVariants } from "./actions/get-product-variants/action";
 import { addCartDiscount } from "./actions/add-cart-discount/action";
 import { setProductActive } from "./actions/set-product-active/action";
+import { getContext } from "./actions/get-context/action";
 import { addProductDiscount } from "./actions/add-product-discount/action";
 import { addProductToCart } from "./actions/add-product-to-cart/action";
 
@@ -25,7 +26,8 @@ export const commands = {
     setProductActive,
     addProductDiscount,
     addProductToCart,
-    addCartDiscount
+    addCartDiscount,
+    getContext
 } as const;
 
 // Export types from action folders (only Params, Response, and Function types)
@@ -100,6 +102,11 @@ export type {
     AddCartDiscountParams,
     AddCartDiscountResponse
 } from "./actions/add-cart-discount/types";
+
+export type {
+    GetContext,
+    GetContextResponse
+} from "./actions/get-context/types";
 
 // Export client
 export { commandsFrameClient, CommandsFrameClient } from "./client";

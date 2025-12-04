@@ -225,6 +225,82 @@ const result = await commands.getProducts({
 });
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "products": [
+    {
+      "_id": "691df9c6c478bada1fb23d31",
+      "name": "Final Coffee ",
+      "productType": "variable",
+      "source": "standalone",
+      "companyId": "691df9c4c478bada1fb23bff",
+      "minPrice": "10.00",
+      "maxPrice": "10.00",
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-12-03T10:00:00.000Z"
+    },
+    {
+      "_id": "691df9c6c478bada1fb23d32",
+      "name": "Cool Shirt",
+      "productType": "variable",
+      "source": "standalone",
+      "companyId": "691df9c4c478bada1fb23bff",
+      "minPrice": "20.00",
+      "maxPrice": "20.00",
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-12-03T10:00:00.000Z"
+    },
+    {
+      "_id": "691df9c6c478bada1fb23d33",
+      "name": "Final Juice",
+      "productType": "variable",
+      "source": "standalone",
+      "companyId": "691df9c4c478bada1fb23bff",
+      "minPrice": "23.00",
+      "maxPrice": "42.00",
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-12-03T10:00:00.000Z"
+    }
+  ],
+  "timestamp": "2025-12-04T19:23:45.123Z"
+}
+```
+
+### Example Product with Variants
+
+```json
+{
+  "_id": "691df9c6c478bada1fb23d31",
+  "name": "Final Coffee ",
+  "productType": "variable",
+  "source": "standalone",
+  "companyId": "691df9c4c478bada1fb23bff",
+  "minPrice": "10.00",
+  "maxPrice": "10.00",
+  "variants": [
+    {
+      "_id": "691df9c6c478bada1fb23d55",
+      "productId": "691df9c6c478bada1fb23d31",
+      "price": "10.00",
+      "images": [],
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-12-03T10:00:00.000Z"
+    }
+  ],
+  "isDeleted": false,
+  "createdAt": "2024-12-03T10:00:00.000Z",
+  "updatedAt": "2024-12-03T10:00:00.000Z"
+}
+```
+
 ## Product Structure Reference
 
 The product structure may vary depending on the database implementation. The structure shown above is a reference based on MongoDB schemas. In practice, product objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).

@@ -250,6 +250,30 @@ await commands.addProductDiscount({
 - For percentage discounts, the amount typically ranges from 0 to 100, but the handler doesn't enforce this limit
 - Negative amounts are allowed (though not typically used)
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "amount": 10,
+  "isPercent": false,
+  "label": "Discount",
+  "timestamp": "2025-12-04T19:25:19.432Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "amount": 10,
+  "isPercent": false,
+  "label": "Discount"
+}
+```
+
 ## Notes
 
 - The discount is applied to the active product, not to products already in the cart

@@ -156,6 +156,26 @@ await commands.setProductActive({
 // (Internal error - should not occur in normal usage)
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "variantId": "691df9c6c478bada1fb23d55",
+  "timestamp": "2025-12-04T19:24:31.983Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "variantId": "691df9c6c478bada1fb23d55"
+}
+```
+
 ## Notes
 
 - Setting a product as active is required before adding discounts or adding to cart

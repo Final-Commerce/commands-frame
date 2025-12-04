@@ -221,6 +221,69 @@ try {
 }
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "customer": {
+    "_id": "691df9c6c478bada1fb23cdd",
+    "isDeleted": false,
+    "createdAt": "2024-12-03T10:00:00.000Z",
+    "updatedAt": "2024-07-26T19:12:03.104Z",
+    "companyId": "691df9c4c478bada1fb23bff",
+    "email": "michael.smith@gmail.com",
+    "firstName": "Michael",
+    "lastName": "Smith",
+    "phone": "+1-415-555-1234",
+    "tags": [],
+    "fromOliver": false,
+    "metadata": [],
+    "notes": [],
+    "billing": {
+      "address1": "123 Main Street",
+      "address2": "",
+      "city": "San Francisco",
+      "company": "",
+      "country": "US",
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "postCode": "94105",
+      "state": "CA"
+    },
+    "shipping": {
+      "address1": "123 Main Street",
+      "address2": "",
+      "city": "San Francisco",
+      "company": "",
+      "country": "US",
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "postCode": "94105",
+      "state": "CA"
+    },
+    "__v": 0,
+    "meta": {
+      "revision": 0,
+      "created": 1764875997651,
+      "version": 0
+    },
+    "$loki": 1
+  },
+  "timestamp": "2025-12-04T19:25:50.817Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "customerId": "691df9c6c478bada1fb23cdd"
+}
+```
+
 ## Notes
 
 - The customer must exist in the local database before assignment

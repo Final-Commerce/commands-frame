@@ -115,6 +115,45 @@ result.variants.forEach(variant => {
 });
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "variants": [
+    {
+      "_id": "691df9c6c478bada1fb23d55",
+      "productId": "691df9c6c478bada1fb23d31",
+      "price": "10.00",
+      "images": [],
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-12-03T10:00:00.000Z"
+    }
+  ],
+  "productId": "691df9c6c478bada1fb23d31",
+  "timestamp": "2025-12-04T19:24:05.456Z"
+}
+```
+
+### Example Variant with Full Details
+
+```json
+{
+  "_id": "691df9c6c478bada1fb23d55",
+  "productId": "691df9c6c478bada1fb23d31",
+  "companyId": "691df9c4c478bada1fb23bff",
+  "price": "10.00",
+  "images": [],
+  "attributes": [],
+  "inventory": [],
+  "isDeleted": false,
+  "createdAt": "2024-12-03T10:00:00.000Z",
+  "updatedAt": "2024-12-03T10:00:00.000Z"
+}
+```
+
 ## Variant Structure Reference
 
 The variant structure may vary depending on the database implementation. The structure shown above is a reference based on MongoDB schemas. In practice, variant objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).

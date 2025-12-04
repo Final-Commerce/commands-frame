@@ -145,6 +145,47 @@ const result = await commands.getCategories({
 });
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "categories": [
+    {
+      "_id": "693086eda7030296aecd3b9e",
+      "name": "Test category",
+      "parentId": null,
+      "externalId": null
+    },
+    {
+      "_id": "691df9c6c478bada1fb23d29",
+      "name": "cool stuff",
+      "parentId": null,
+      "externalId": null
+    },
+    {
+      "_id": "693199552d793b4388bcfd90",
+      "name": "Coffee",
+      "parentId": null,
+      "externalId": null
+    }
+  ],
+  "timestamp": "2025-12-04T19:24:13.293Z"
+}
+```
+
+### Example Category Object
+
+```json
+{
+  "_id": "693199552d793b4388bcfd90",
+  "name": "Coffee",
+  "parentId": null,
+  "externalId": null
+}
+```
+
 ## Category Structure Reference
 
 The category structure may vary depending on the database implementation. The structure shown above is a reference based on MongoDB schemas. In practice, category objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).

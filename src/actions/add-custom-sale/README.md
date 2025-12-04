@@ -233,6 +233,30 @@ try {
 - Price can be negative (for discounts)
 - Price will be converted to a number internally (strings are parsed)
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "label": "Custom Item",
+  "price": 10,
+  "applyTaxes": false,
+  "timestamp": "2025-12-04T19:24:13.293Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "label": "Custom Item",
+  "price": 10,
+  "applyTaxes": false
+}
+```
+
 ## Notes
 
 - The custom sale is added to the current active cart/session

@@ -154,6 +154,98 @@ const result = await commands.getCustomers({
 });
 ```
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "customers": [
+    {
+      "_id": "691df9c6c478bada1fb23cdd",
+      "companyId": "691df9c4c478bada1fb23bff",
+      "email": "michael.smith@gmail.com",
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "phone": "+1-415-555-1234",
+      "tags": [],
+      "fromOliver": false,
+      "metadata": [],
+      "notes": [],
+      "billing": {
+        "address1": "123 Main Street",
+        "address2": "",
+        "city": "San Francisco",
+        "company": "",
+        "country": "US",
+        "firstName": "Michael",
+        "lastName": "Smith",
+        "postCode": "94105",
+        "state": "CA"
+      },
+      "shipping": {
+        "address1": "123 Main Street",
+        "address2": "",
+        "city": "San Francisco",
+        "company": "",
+        "country": "US",
+        "firstName": "Michael",
+        "lastName": "Smith",
+        "postCode": "94105",
+        "state": "CA"
+      },
+      "isDeleted": false,
+      "createdAt": "2024-12-03T10:00:00.000Z",
+      "updatedAt": "2024-07-26T19:12:03.104Z"
+    }
+  ],
+  "total": 33,
+  "timestamp": "2025-12-04T19:25:50.817Z"
+}
+```
+
+### Example Customer Object
+
+```json
+{
+  "_id": "691df9c6c478bada1fb23cdd",
+  "companyId": "691df9c4c478bada1fb23bff",
+  "email": "michael.smith@gmail.com",
+  "firstName": "Michael",
+  "lastName": "Smith",
+  "phone": "+1-415-555-1234",
+  "tags": [],
+  "fromOliver": false,
+  "metadata": [],
+  "notes": [],
+  "billing": {
+    "address1": "123 Main Street",
+    "address2": "",
+    "city": "San Francisco",
+    "company": "",
+    "country": "US",
+    "firstName": "Michael",
+    "lastName": "Smith",
+    "postCode": "94105",
+    "state": "CA"
+  },
+  "shipping": {
+    "address1": "123 Main Street",
+    "address2": "",
+    "city": "San Francisco",
+    "company": "",
+    "country": "US",
+    "firstName": "Michael",
+    "lastName": "Smith",
+    "postCode": "94105",
+    "state": "CA"
+  },
+  "isDeleted": false,
+  "createdAt": "2024-12-03T10:00:00.000Z",
+  "updatedAt": "2024-07-26T19:12:03.104Z"
+}
+```
+
 ## Customer Structure Reference
 
 The customer structure may vary depending on the database implementation. The structure shown above is a reference based on the MongoDB schema. In practice, customer objects are returned as `any` to allow flexibility between different database implementations (MongoDB/mongoose vs LokiJS/IndexedDB).

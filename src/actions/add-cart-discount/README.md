@@ -245,6 +245,30 @@ await commands.addCartDiscount({
 - For percentage discounts, the amount typically ranges from 0 to 100, but the handler doesn't enforce this limit
 - Negative amounts are allowed (though not typically used)
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "amount": 10,
+  "isPercent": false,
+  "label": "Cart Discount",
+  "timestamp": "2025-12-04T19:25:28.241Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "amount": 10,
+  "isPercent": false,
+  "label": "Cart Discount"
+}
+```
+
 ## Notes
 
 - Only one cart discount can be active at a time (adding a new discount replaces the previous one)

@@ -202,6 +202,29 @@ await commands.addProductToCart();
 - `quantity` should be a positive number (typically 1 or greater)
 - The handler will use the active product's quantity if no quantity is provided
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "productId": "691df9c6c478bada1fb23d31",
+  "variantId": "691df9c6c478bada1fb23d55",
+  "name": "Final Coffee ",
+  "quantity": 1,
+  "timestamp": "2025-12-04T19:25:25.607Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "quantity": 1
+}
+```
+
 ## Notes
 
 - The product must be set as active before adding to cart

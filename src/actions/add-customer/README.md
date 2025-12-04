@@ -291,6 +291,39 @@ Common error scenarios:
 - `metadata` items must have both `key` and `value` as strings
 - `notes` items must have both `createdAt` and `message` fields
 
+## Real Data Examples
+
+### Example Response
+
+```json
+{
+  "success": true,
+  "customer": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "newcustomer.test@example.com",
+    "phone": "1234567890",
+    "_id": "6931e04f53d9113bd5231dfd",
+    "createdAt": "2025-12-04T19:26:07.316Z",
+    "updatedAt": "2025-12-04T19:26:07.316Z"
+  },
+  "timestamp": "2025-12-04T19:26:07.316Z"
+}
+```
+
+### Example Request
+
+```json
+{
+  "customer": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "newcustomer.test@example.com",
+    "phone": "1234567890"
+  }
+}
+```
+
 ## Notes
 
 - The customer is created in the local IndexedDB database (LokiJS)

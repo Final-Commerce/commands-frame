@@ -40,42 +40,15 @@ The customer object to create. The type is `Record<string, any>` to allow flexib
 
 ### Address Structure
 
-Both `billing` and `shipping` typically follow this structure:
-
-```typescript
-// Reference structure
-{
-    firstName?: string;
-    lastName?: string;
-    company?: string;
-    address1: string;        // Required
-    address2?: string;
-    city: string;            // Required
-    state: string;           // Required
-    country: string;         // Required
-    postCode: string;        // Required
-}
-```
+Both `billing` and `shipping` follow the address structure shown in the [Real Data Examples](#real-data-examples) section below.
 
 ### Metadata Structure
 
-```typescript
-// Reference structure
-{
-    key: string;    // Required
-    value: string;  // Required
-}
-```
+Metadata is an array of key-value pairs. See the [Real Data Examples](#real-data-examples) section below for actual examples.
 
 ### Notes Structure
 
-```typescript
-// Reference structure
-{
-    createdAt: Date | string;  // Required
-    message: string;           // Required
-}
-```
+Notes is an array of timestamped messages. See the [Real Data Examples](#real-data-examples) section below for actual examples.
 
 ## Response
 

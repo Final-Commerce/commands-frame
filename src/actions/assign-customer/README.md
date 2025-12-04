@@ -36,32 +36,7 @@ Indicates whether the customer was successfully assigned to the session.
 
 #### `customer` (any)
 
-The customer object that was assigned to the session. This is the complete customer record retrieved from the database. The structure depends on the database implementation. A typical customer object may contain:
-
-```typescript
-// Reference structure (actual structure may vary)
-{
-    id?: string;  // ID field (structure depends on database)
-    companyId?: string;
-    externalId?: string;
-    email: string;
-    firstName?: string;
-    lastName?: string;
-    phone?: string;
-    tags?: string[];
-    metadata?: Array<{ key: string; value: string }>;
-    notes?: Array<{ createdAt: Date | string; message: string }>;
-    billing?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any };
-    shipping?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any };
-    totalSpent?: string;
-    lastAction?: Date | string;
-    outletId?: string;
-    fromOliver: boolean;
-    isDeleted?: boolean;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-}
-```
+The customer object that was assigned to the session. This is the complete customer record retrieved from the database. The structure depends on the database implementation. See the [Real Data Examples](#real-data-examples) section below for actual customer object structures.
 
 #### `timestamp` (string)
 

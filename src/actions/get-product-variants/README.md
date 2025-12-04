@@ -30,34 +30,7 @@ interface GetProductVariantsResponse {
 
 #### `variants` (any[])
 
-Array of variant objects for the specified product. A typical variant object may contain the following fields:
-
-```typescript
-// Reference structure (actual structure may vary)
-interface Variant {
-    _id?: string;                     // Variant ID
-    id?: string;                      // Alternative ID field
-    companyId?: string;               // Company identifier
-    productId: string;                // Parent product ID
-    allowBackorder?: boolean;         // Allow backorder flag
-    attributes?: Array<{ name?: string; value?: string }>;  // Variant attributes
-    barcode?: string;                 // Barcode
-    externalId?: string;              // External system ID
-    images: string[];                 // Variant images
-    inventory?: Array<{ stock?: number; outletId?: string }>;   // Inventory per outlet
-    manageStock?: boolean;           // Stock management flag
-    isOnSale?: boolean;              // Sale status
-    metadata?: Array<{ key?: string; value?: string }>;    // Custom metadata
-    price?: string;                  // Regular price
-    salePrice?: string;              // Sale price
-    sku?: string;                    // Variant SKU
-    costPrice?: string;              // Cost price
-    name?: string;                   // Variant name
-    isDeleted?: boolean;             // Deletion flag
-    createdAt?: Date | string;      // Creation timestamp
-    updatedAt?: Date | string;       // Last update timestamp
-}
-```
+Array of variant objects for the specified product. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). See the [Real Data Examples](#real-data-examples) section below for actual variant object structures.
 
 #### `productId` (string)
 

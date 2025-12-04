@@ -51,32 +51,7 @@ interface GetCustomersResponse {
 
 #### `customers` (any[])
 
-Array of customer objects matching the query. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). A typical customer object may contain the following fields:
-
-```typescript
-// Reference structure (actual structure may vary)
-interface Customer {
-    id?: string;                // ID field (structure depends on database)
-    companyId?: string;         // Company identifier
-    externalId?: string;        // External system ID
-    email: string;              // Required: Customer email
-    firstName?: string;         // First name
-    lastName?: string;          // Last name
-    phone?: string;             // Phone number
-    tags?: string[];            // Customer tags
-    metadata?: Array<{ key: string; value: string }>; // Custom metadata
-    notes?: Array<{ createdAt: Date | string; message: string }>; // Customer notes
-    billing?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any }; // Billing address
-    shipping?: { address1: string; city: string; state: string; country: string; postCode: string; [key: string]: any }; // Shipping address
-    totalSpent?: string;        // Total amount spent
-    lastAction?: Date | string; // Last action timestamp
-    outletId?: string;          // Associated outlet ID
-    fromOliver: boolean;        // Source indicator
-    isDeleted?: boolean;        // Deletion flag
-    createdAt?: Date | string;  // Creation timestamp
-    updatedAt?: Date | string;  // Last update timestamp
-}
-```
+Array of customer objects matching the query. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). See the [Real Data Examples](#real-data-examples) section below for actual customer object structures.
 
 #### `total` (number, optional)
 

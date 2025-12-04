@@ -44,22 +44,7 @@ interface GetCategoriesResponse {
 
 #### `categories` (any[])
 
-Array of category objects matching the query. A typical category object may contain the following fields:
-
-```typescript
-// Reference structure (actual structure may vary)
-interface Category {
-    _id?: string;              // Category ID
-    id?: string;               // Alternative ID field
-    companyId?: string;        // Company identifier
-    externalId?: string;       // External system ID
-    name: string;              // Category name
-    parentId?: string | null;  // Parent category ID (null for top-level)
-    isDeleted?: boolean;       // Deletion flag
-    createdAt?: Date | string; // Creation timestamp
-    updatedAt?: Date | string; // Last update timestamp
-}
-```
+Array of category objects matching the query. The actual structure may vary depending on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB). See the [Real Data Examples](#real-data-examples) section below for actual category object structures.
 
 #### `timestamp` (string)
 

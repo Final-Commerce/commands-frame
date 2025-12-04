@@ -58,100 +58,11 @@ Assign a customer to the current session:
 import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.assignCustomer({
-    customerId: '507f1f77bcf86cd799439011'
+    customerId: '691df9c6c478bada1fb23cdd'
 });
 
 console.log(result.customer);
 console.log('Customer assigned:', result.success);
-```
-
-### Assign Customer from Search Results
-
-Find a customer first, then assign them:
-
-```typescript
-// First, search for the customer
-const searchResult = await commands.getCustomers({
-    query: {
-        email: 'john.doe@example.com'
-    }
-});
-
-if (searchResult.customers.length > 0) {
-    const customer = searchResult.customers[0];
-    // ID field structure depends on database (may be id, _id, or other formats)
-    const customerId = customer.id || customer._id || customer['$loki'];
-    
-    if (customerId) {
-        // Assign the found customer
-        const assignResult = await commands.assignCustomer({
-            customerId: customerId
-        });
-        
-        console.log('Assigned customer:', assignResult.customer.firstName);
-    }
-}
-```
-
-### Error Handling
-
-Handle cases where the customer is not found:
-
-```typescript
-try {
-    const result = await commands.assignCustomer({
-        customerId: 'invalid-id'
-    });
-} catch (error) {
-    if (error.message === 'Customer not found') {
-        console.error('Customer does not exist');
-    } else if (error.message === 'customerId is required') {
-        console.error('Please provide a customer ID');
-    } else {
-        console.error('Failed to assign customer:', error.message);
-    }
-}
-```
-
-### Complete Workflow Example
-
-Complete example of creating and assigning a customer:
-
-```typescript
-// Step 1: Check if customer exists
-const searchResult = await commands.getCustomers({
-    query: {
-        email: 'newcustomer@example.com'
-    }
-});
-
-let customerId: string;
-
-if (searchResult.customers.length > 0) {
-    // Customer exists, use their ID
-    // ID field structure depends on database (may be id, _id, or other formats)
-    const customer = searchResult.customers[0];
-    customerId = customer.id || customer._id || customer['$loki'] || '';
-} else {
-    // Create new customer
-    const newCustomer = await commands.addCustomer({
-        customer: {
-            email: 'newcustomer@example.com',
-            firstName: 'New',
-            lastName: 'Customer'
-        }
-    });
-    // ID field structure depends on database
-    const createdCustomer = newCustomer.customer;
-    customerId = createdCustomer.id || createdCustomer._id || createdCustomer['$loki'] || '';
-}
-
-// Step 2: Assign customer to session
-const assignResult = await commands.assignCustomer({
-    customerId: customerId
-});
-
-console.log('Session customer:', assignResult.customer);
 ```
 
 ## Behavior
@@ -165,36 +76,7 @@ When a customer is assigned:
 
 ## Error Handling
 
-The handler will throw errors in the following cases:
-
-### Missing customerId
-
-```typescript
-// Throws: "customerId is required"
-await commands.assignCustomer({});
-```
-
-### Customer Not Found
-
-```typescript
-// Throws: "Customer not found"
-await commands.assignCustomer({
-    customerId: 'non-existent-id'
-});
-```
-
-### Error Response Format
-
-```typescript
-try {
-    const result = await commands.assignCustomer({
-        customerId: 'some-id'
-    });
-} catch (error) {
-    // error.message contains the error description
-    console.error(error.message);
-}
-```
+The handler will throw errors if the `customerId` is missing or if the customer is not found.
 
 ## Real Data Examples
 

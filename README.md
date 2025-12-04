@@ -50,44 +50,36 @@ import { commands } from '@final-commerce/commands-frame';
 const products = await commands.getProducts();
 
 // Get customers from parent window
-const customers = await commands.getCustomers({
-    query: {
-        email: 'customer@example.com'
-    }
-});
+const customers = await commands.getCustomers();
 
 // Get categories from parent window
-const categories = await commands.getCategories({
-    query: {
-        parentId: null  // Get top-level categories
-    }
-});
+const categories = await commands.getCategories();
 
 // Get variants for a product
 const variants = await commands.getProductVariants({
-    productId: 'product-id-123'
+    productId: '691df9c6c478bada1fb23d31'
 });
 
 // Set a variant as active, add discount, then add to cart
 await commands.setProductActive({
-    variantId: 'variant-id-123'
+    variantId: '691df9c6c478bada1fb23d55'
 });
 
 await commands.addProductDiscount({
     amount: 10,
     isPercent: false,
-    label: 'Special Discount'
+    label: 'Discount'
 });
 
 await commands.addProductToCart({
-    quantity: 2
+    quantity: 1
 });
 
 // Add cart discount
 await commands.addCartDiscount({
     amount: 10,
     isPercent: false,
-    label: 'Promotion Discount'
+    label: 'Cart Discount'
 });
 ```
 

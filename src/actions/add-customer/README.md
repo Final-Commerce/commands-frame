@@ -88,173 +88,28 @@ import { commands } from '@final-commerce/commands-frame';
 
 ## Usage Examples
 
-### Minimal Customer Creation
+### Create Customer
 
-Create a customer with only the required email:
+Create a customer with basic information:
 
 ```typescript
 import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.addCustomer({
     customer: {
-        email: 'john.doe@example.com'
+        email: 'newcustomer.test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: '1234567890'
     }
 });
 
 console.log(result.customer);
 ```
 
-### Customer with Basic Information
-
-Create a customer with name and phone:
-
-```typescript
-const result = await commands.addCustomer({
-    customer: {
-        email: 'jane.smith@example.com',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        phone: '+1-555-123-4567'
-    }
-});
-```
-
-### Customer with Addresses
-
-Create a customer with billing and shipping addresses:
-
-```typescript
-const result = await commands.addCustomer({
-    customer: {
-        email: 'customer@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        billing: {
-            address1: '123 Main St',
-            city: 'New York',
-            state: 'NY',
-            country: 'USA',
-            postCode: '10001'
-        },
-        shipping: {
-            address1: '456 Oak Ave',
-            address2: 'Suite 100',
-            city: 'Los Angeles',
-            state: 'CA',
-            country: 'USA',
-            postCode: '90001'
-        }
-    }
-});
-```
-
-### Customer with Metadata and Tags
-
-Create a customer with custom metadata and tags:
-
-```typescript
-const result = await commands.addCustomer({
-    customer: {
-        email: 'vip@example.com',
-        firstName: 'VIP',
-        lastName: 'Customer',
-        tags: ['vip', 'premium'],
-        metadata: [
-            { key: 'loyaltyLevel', value: 'gold' },
-            { key: 'referralSource', value: 'website' }
-        ]
-    }
-});
-```
-
-### Customer with Notes
-
-Create a customer with initial notes:
-
-```typescript
-const result = await commands.addCustomer({
-    customer: {
-        email: 'noted@example.com',
-        firstName: 'Noted',
-        lastName: 'Customer',
-        notes: [
-            {
-                createdAt: new Date().toISOString(),
-                message: 'Initial customer registration'
-            }
-        ]
-    }
-});
-```
-
-### Complete Customer Example
-
-Create a customer with all available fields:
-
-```typescript
-const result = await commands.addCustomer({
-    customer: {
-        email: 'complete@example.com',
-        firstName: 'Complete',
-        lastName: 'Customer',
-        phone: '+1-555-999-8888',
-        tags: ['new', 'verified'],
-        metadata: [
-            { key: 'source', value: 'mobile-app' }
-        ],
-        notes: [
-            {
-                createdAt: new Date().toISOString(),
-                message: 'Customer signed up via mobile app'
-            }
-        ],
-        billing: {
-            firstName: 'Complete',
-            lastName: 'Customer',
-            address1: '789 Elm St',
-            city: 'Chicago',
-            state: 'IL',
-            country: 'USA',
-            postCode: '60601'
-        },
-        shipping: {
-            firstName: 'Complete',
-            lastName: 'Customer',
-            address1: '789 Elm St',
-            city: 'Chicago',
-            state: 'IL',
-            country: 'USA',
-            postCode: '60601'
-        },
-        outletId: 'outlet-123',
-        externalId: 'ext-customer-456',
-        fromOliver: false
-    }
-});
-```
-
 ## Error Handling
 
-If the customer creation fails, the handler will throw an error:
-
-```typescript
-try {
-    const result = await commands.addCustomer({
-        customer: {
-            email: 'invalid-email' // Missing required email format
-        }
-    });
-} catch (error) {
-    console.error('Failed to add customer:', error.message);
-    // Error: customer data is required
-}
-```
-
-Common error scenarios:
-
-- Missing `customer` object: "customer data is required"
-- Invalid email format: Validation error from the database
-- Duplicate email: Database constraint violation
+If the customer creation fails, the handler will throw an error. Common error scenarios include missing `customer` object, invalid email format, or duplicate email.
 
 ## Validation Rules
 

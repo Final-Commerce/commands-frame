@@ -54,38 +54,10 @@ import { commands } from '@final-commerce/commands-frame';
 import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.getProductVariants({
-    productId: 'product-id-123'
+    productId: '691df9c6c478bada1fb23d31'
 });
 
 console.log(result.variants);
-```
-
-### Handle Empty Variants
-
-```typescript
-const result = await commands.getProductVariants({
-    productId: 'product-id-123'
-});
-
-if (result.variants.length === 0) {
-    console.log('This product has no variants');
-} else {
-    console.log(`Found ${result.variants.length} variants`);
-}
-```
-
-### Access Variant Properties
-
-```typescript
-const result = await commands.getProductVariants({
-    productId: 'product-id-123'
-});
-
-result.variants.forEach(variant => {
-    console.log(`Variant: ${variant.name || variant.sku}`);
-    console.log(`Price: ${variant.price}`);
-    console.log(`Stock: ${variant.inventory?.[0]?.stock || 0}`);
-});
 ```
 
 ## Real Data Examples
@@ -140,27 +112,7 @@ Key fields that may be present:
 
 ## Error Handling
 
-If the product ID is not provided, the handler will throw an error:
-
-```typescript
-try {
-    const result = await commands.getProductVariants({
-        productId: 'product-id-123'
-    });
-} catch (error) {
-    console.error('Error:', error.message); // "Product ID is required"
-}
-```
-
-If the query fails or no variants are found, the handler returns an empty array:
-
-```typescript
-{
-    variants: [],
-    productId: "product-id-123",
-    timestamp: "2024-01-01T00:00:00.000Z"
-}
-```
+If the product ID is not provided, the handler will throw an error. If the query fails or no variants are found, the handler returns an empty array.
 
 ## Notes
 

@@ -9,7 +9,6 @@ Retrieves a list of customers from the parent application's local database.
 ```typescript
 interface GetCustomersParams {
     query?: {
-        // MongoDB query fields
         email?: string | { $regex?: string; $options?: string };
         firstName?: string | { $regex?: string; $options?: string };
         lastName?: string | { $regex?: string; $options?: string };
@@ -23,19 +22,9 @@ interface GetCustomersParams {
 
 #### `query` (optional)
 
-A MongoDB query object to filter customers. The handler supports text search across `firstName`, `lastName`, `email`, and `phone` fields when using the query object.
+A query object to filter customers. The actual supported query operators depend on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB).
 
-**Supported query fields:**
-
-- `email` (string | regex): Filter by email address. Supports regex for partial matches.
-- `firstName` (string | regex): Filter by first name. Supports regex for partial matches.
-- `lastName` (string | regex): Filter by last name. Supports regex for partial matches.
-- `phone` (string | regex): Filter by phone number. Supports regex for partial matches.
-- `tags` (string | array): Filter by tags. Use `{ $in: ['tag1', 'tag2'] }` for multiple tags.
-- `outletId` (string): Filter by outlet ID.
-- Additional MongoDB query operators are supported (e.g., `$ne`, `$gt`, `$lt`, etc.)
-
-**Note:** The handler automatically excludes deleted customers (`isDeleted: { $ne: true }`) and limits results to 100 items by default.
+**Note:** The handler automatically excludes deleted customers and limits results to 100 items by default.
 
 ## Response
 
@@ -78,55 +67,6 @@ import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.getCustomers();
 console.log(result.customers);
-```
-
-### Search by Email
-
-Find customers with a specific email domain:
-
-```typescript
-const result = await commands.getCustomers({
-    query: {
-        email: { $regex: '@example.com', $options: 'i' }
-    }
-});
-```
-
-### Filter by Tags
-
-Find customers with specific tags:
-
-```typescript
-const result = await commands.getCustomers({
-    query: {
-        tags: { $in: ['vip', 'premium'] }
-    }
-});
-```
-
-### Search by Name
-
-Find customers by first or last name:
-
-```typescript
-const result = await commands.getCustomers({
-    query: {
-        firstName: { $regex: 'John', $options: 'i' }
-    }
-});
-```
-
-### Combined Filters
-
-Combine multiple filters:
-
-```typescript
-const result = await commands.getCustomers({
-    query: {
-        outletId: 'outlet-123',
-        tags: { $in: ['vip'] }
-    }
-});
 ```
 
 ## Real Data Examples
@@ -248,6 +188,4 @@ If the query fails or no customers are found, the handler returns an empty array
 
 - Results are limited to 100 customers per request
 - Deleted customers (`isDeleted: true`) are automatically excluded
-- Text search is performed across `firstName`, `lastName`, `email`, and `phone` fields
-- The query supports standard MongoDB query operators
 

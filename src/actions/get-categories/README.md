@@ -9,7 +9,6 @@ Retrieves a list of categories from the parent application's local database.
 ```typescript
 interface GetCategoriesParams {
     query?: {
-        // MongoDB query fields
         name?: string | { $regex?: string; $options?: string };
         parentId?: string | null;
         externalId?: string;
@@ -20,16 +19,9 @@ interface GetCategoriesParams {
 
 #### `query` (optional)
 
-A MongoDB query object to filter categories.
+A query object to filter categories. The actual supported query operators depend on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB).
 
-**Supported query fields:**
-
-- `name` (string | regex): Filter by category name. Supports regex for partial matches.
-- `parentId` (string | null): Filter by parent category ID. Use `null` to get top-level categories.
-- `externalId` (string): Filter by external system ID.
-- Additional MongoDB query operators are supported (e.g., `$ne`, `$gt`, `$lt`, etc.)
-
-**Note:** The handler automatically excludes deleted categories (`isDeleted: { $ne: true }`).
+**Note:** The handler automatically excludes deleted categories.
 
 ## Response
 
@@ -67,67 +59,6 @@ import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.getCategories();
 console.log(result.categories);
-```
-
-### Search by Name
-
-Find categories by name:
-
-```typescript
-const result = await commands.getCategories({
-    query: {
-        name: { $regex: 'electronics', $options: 'i' }
-    }
-});
-```
-
-### Get Top-Level Categories
-
-Get only categories without a parent:
-
-```typescript
-const result = await commands.getCategories({
-    query: {
-        parentId: null
-    }
-});
-```
-
-### Get Subcategories
-
-Get categories for a specific parent:
-
-```typescript
-const result = await commands.getCategories({
-    query: {
-        parentId: 'parent-category-id'
-    }
-});
-```
-
-### Filter by External ID
-
-Get category by external system ID:
-
-```typescript
-const result = await commands.getCategories({
-    query: {
-        externalId: 'external-id-123'
-    }
-});
-```
-
-### Combined Filters
-
-Combine multiple filters:
-
-```typescript
-const result = await commands.getCategories({
-    query: {
-        parentId: null,
-        name: { $regex: 'electronics', $options: 'i' }
-    }
-});
 ```
 
 ## Real Data Examples
@@ -194,6 +125,5 @@ If the query fails or no categories are found, the handler returns an empty arra
 ## Notes
 
 - Deleted categories (`isDeleted: true`) are automatically excluded
-- The query supports standard MongoDB query operators
 - Categories can be organized in a hierarchical structure using `parentId`
 

@@ -9,7 +9,6 @@ Retrieves a list of products from the parent application's local database.
 ```typescript
 interface GetProductsParams {
     query?: {
-        // MongoDB query fields
         name?: string | { $regex?: string; $options?: string };
         sku?: string | { $regex?: string; $options?: string };
         status?: string;
@@ -25,21 +24,9 @@ interface GetProductsParams {
 
 #### `query` (optional)
 
-A MongoDB query object to filter products. The handler supports text search across `name` and `sku` fields when using the query object.
+A query object to filter products. The actual supported query operators depend on the database implementation (MongoDB/mongoose vs LokiJS/IndexedDB).
 
-**Supported query fields:**
-
-- `name` (string | regex): Filter by product name. Supports regex for partial matches.
-- `sku` (string | regex): Filter by SKU. Supports regex for partial matches.
-- `status` (string): Filter by product status (e.g., 'active', 'inactive', 'draft').
-- `productType` (string): Filter by product type (e.g., 'simple', 'variable', 'grouped').
-- `categories` (string | array): Filter by category IDs. Use `{ $in: ['cat1', 'cat2'] }` for multiple categories.
-- `tags` (string | array): Filter by tags. Use `{ $in: ['tag1', 'tag2'] }` for multiple tags.
-- `supplier` (string): Filter by supplier name.
-- `externalId` (string): Filter by external system ID.
-- Additional MongoDB query operators are supported (e.g., `$ne`, `$gt`, `$lt`, etc.)
-
-**Note:** The handler automatically excludes deleted products (`isDeleted: { $ne: true }`) and limits results to 100 items by default.
+**Note:** The handler automatically excludes deleted products and limits results to 100 items by default.
 
 ## Response
 
@@ -77,92 +64,6 @@ import { commands } from '@final-commerce/commands-frame';
 
 const result = await commands.getProducts();
 console.log(result.products);
-```
-
-### Search by Name
-
-Find products by name:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        name: { $regex: 'laptop', $options: 'i' }
-    }
-});
-```
-
-### Search by SKU
-
-Find products by SKU:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        sku: { $regex: 'LAP-', $options: 'i' }
-    }
-});
-```
-
-### Filter by Status
-
-Get only active products:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        status: 'active'
-    }
-});
-```
-
-### Filter by Product Type
-
-Get products of a specific type:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        productType: 'variable'
-    }
-});
-```
-
-### Filter by Category
-
-Get products in specific categories:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        categories: { $in: ['cat-id-1', 'cat-id-2'] }
-    }
-});
-```
-
-### Filter by Tags
-
-Get products with specific tags:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        tags: { $in: ['featured', 'bestseller'] }
-    }
-});
-```
-
-### Combined Filters
-
-Combine multiple filters:
-
-```typescript
-const result = await commands.getProducts({
-    query: {
-        status: 'active',
-        productType: 'simple',
-        tags: { $in: ['featured'] }
-    }
-});
 ```
 
 ## Real Data Examples
@@ -273,7 +174,5 @@ If the query fails or no products are found, the handler returns an empty array:
 
 - Results are limited to 100 products per request
 - Deleted products (`isDeleted: true`) are automatically excluded
-- Text search is performed across `name` and `sku` fields
-- The query supports standard MongoDB query operators
 - Variants may be included in the response depending on the handler implementation
 

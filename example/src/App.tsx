@@ -45,6 +45,13 @@ function App() {
   const [addToCartResponse, setAddToCartResponse] = useState<string>('');
   const [addToCartQuantity, setAddToCartQuantity] = useState<string>('1');
   
+  // Cart discount state
+  const [cartDiscountAmount, setCartDiscountAmount] = useState<string>('10');
+  const [cartDiscountIsPercent, setCartDiscountIsPercent] = useState<boolean>(false);
+  const [cartDiscountLabel, setCartDiscountLabel] = useState<string>('Cart Discount');
+  const [addCartDiscountLoading, setAddCartDiscountLoading] = useState(false);
+  const [addCartDiscountResponse, setAddCartDiscountResponse] = useState<string>('');
+  
   const [assignCustomerId, setAssignCustomerId] = useState<string>('');
   const [assignCustomerLoading, setAssignCustomerLoading] = useState(false);
   const [assignCustomerResponse, setAssignCustomerResponse] = useState<string>('');
@@ -399,6 +406,35 @@ function App() {
       setAddToCartResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setAddToCartLoading(false);
+    }
+  };
+
+  const handleAddCartDiscount = async () => {
+    if (!isInIframe) {
+      setAddCartDiscountResponse('Error: Not running in iframe');
+      return;
+    }
+
+    if (!cartDiscountAmount) {
+      setAddCartDiscountResponse('Error: Please enter a discount amount');
+      return;
+    }
+
+    setAddCartDiscountLoading(true);
+    setAddCartDiscountResponse('');
+
+    try {
+      const result = await commands.addCartDiscount({
+        amount: parseFloat(cartDiscountAmount) || 0,
+        isPercent: cartDiscountIsPercent,
+        label: cartDiscountLabel
+      });
+      
+      setAddCartDiscountResponse(`Success: ${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      setAddCartDiscountResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setAddCartDiscountLoading(false);
     }
   };
 
@@ -886,6 +922,57 @@ function App() {
                   <div style={{ marginTop: '10px', padding: '10px', background: addDiscountResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: addDiscountResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
                     <strong>{addDiscountResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
                     <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{addDiscountResponse.replace(/^(Success|Error):\s*/, '')}</pre>
+                  </div>
+                )}
+              </div>
+
+              {/* Add Cart Discount */}
+              <div style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #eee' }}>
+                <h4>Add Cart Discount</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Discount Amount:</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={cartDiscountAmount}
+                      onChange={(e) => setCartDiscountAmount(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Label:</label>
+                    <input
+                      type="text"
+                      value={cartDiscountLabel}
+                      onChange={(e) => setCartDiscountLabel(e.target.value)}
+                      style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                      placeholder="Cart discount label"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={cartDiscountIsPercent}
+                        onChange={(e) => setCartDiscountIsPercent(e.target.checked)}
+                      />
+                      <span>Is Percentage</span>
+                    </label>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleAddCartDiscount} 
+                  disabled={addCartDiscountLoading}
+                  style={{ width: '100%' }}
+                >
+                  {addCartDiscountLoading ? 'Adding...' : 'Add Cart Discount'}
+                </button>
+                {addCartDiscountResponse && (
+                  <div style={{ marginTop: '10px', padding: '10px', background: addCartDiscountResponse.startsWith('Error') ? '#fee' : '#efe', borderRadius: '4px', color: addCartDiscountResponse.startsWith('Error') ? '#c33' : '#3c3' }}>
+                    <strong>{addCartDiscountResponse.startsWith('Error') ? 'Error:' : 'Success:'}</strong>
+                    <pre style={{ margin: '5px 0 0 0', whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '12px' }}>{addCartDiscountResponse.replace(/^(Success|Error):\s*/, '')}</pre>
                   </div>
                 )}
               </div>

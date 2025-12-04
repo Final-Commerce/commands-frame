@@ -84,6 +84,13 @@ await commands.addProductDiscount({
 await commands.addProductToCart({
     quantity: 2
 });
+
+// Add cart discount
+await commands.addCartDiscount({
+    amount: 10,
+    isPercent: false,
+    label: 'Cart Discount'
+});
 ```
 
 ## Testing in an Iframe

@@ -6,6 +6,11 @@ import { CategoriesSection } from './components/sections/CategoriesSection';
 import { ProductsSection } from './components/sections/ProductsSection';
 import { CustomersSection } from './components/sections/CustomersSection';
 import { CartSection } from './components/sections/CartSection';
+import { OrdersSection } from './components/sections/OrdersSection';
+import { RefundsSection } from './components/sections/RefundsSection';
+import { PaymentsSection } from './components/sections/PaymentsSection';
+import { SystemSection } from './components/sections/SystemSection';
+import { IntegrationSection } from './components/sections/IntegrationSection';
 import { ExamplesSection } from './components/sections/ExamplesSection';
 
 function App() {
@@ -24,6 +29,16 @@ function App() {
         return <CustomersSection isInIframe={isInIframe} />;
       case 'cart':
         return <CartSection isInIframe={isInIframe} />;
+      case 'orders':
+        return <OrdersSection isInIframe={isInIframe} />;
+      case 'refunds':
+        return <RefundsSection isInIframe={isInIframe} />;
+      case 'payments':
+        return <PaymentsSection isInIframe={isInIframe} />;
+      case 'system':
+        return <SystemSection isInIframe={isInIframe} />;
+      case 'integration':
+        return <IntegrationSection isInIframe={isInIframe} />;
       case 'examples':
         return <ExamplesSection isInIframe={isInIframe} />;
       default:

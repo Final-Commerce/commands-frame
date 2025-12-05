@@ -22,6 +22,25 @@ export function ProductsSection({ isInIframe }: ProductsSectionProps) {
   const [setProductActiveLoading, setSetProductActiveLoading] = useState(false);
   const [setProductActiveResponse, setSetProductActiveResponse] = useState<string>('');
 
+  // Product Note
+  const [productNote, setProductNote] = useState<string>('');
+  const [addProductNoteLoading, setAddProductNoteLoading] = useState(false);
+  const [addProductNoteResponse, setAddProductNoteResponse] = useState<string>('');
+
+  // Product Fee
+  const [productFeeAmount, setProductFeeAmount] = useState<string>('5.00');
+  const [productFeeIsPercent, setProductFeeIsPercent] = useState<boolean>(false);
+  const [productFeeLabel, setProductFeeLabel] = useState<string>('Service Fee');
+  const [productFeeApplyTaxes, setProductFeeApplyTaxes] = useState<boolean>(false);
+  const [addProductFeeLoading, setAddProductFeeLoading] = useState(false);
+  const [addProductFeeResponse, setAddProductFeeResponse] = useState<string>('');
+
+  // Adjust Inventory
+  const [inventoryAmount, setInventoryAmount] = useState<string>('10');
+  const [inventoryStockType, setInventoryStockType] = useState<'add' | 'subtract' | 'set'>('add');
+  const [adjustInventoryLoading, setAdjustInventoryLoading] = useState(false);
+  const [adjustInventoryResponse, setAdjustInventoryResponse] = useState<string>('');
+
   const handleGetProducts = async () => {
     if (!isInIframe) {
       setProductsError('Error: Not running in iframe');
@@ -297,6 +316,202 @@ export function ProductsSection({ isInIframe }: ProductsSectionProps) {
           <JsonViewer 
             data={setProductActiveResponse} 
             title={setProductActiveResponse.startsWith('Error') ? 'Error' : 'Success'} 
+          />
+        )}
+      </CommandSection>
+
+      <CommandSection title="Add Product Note">
+        <p className="section-description">
+          Adds a note to the currently active product. Requires a product to be set as active first.
+        </p>
+        <div className="form-group">
+          <div className="form-field">
+            <label>Note:</label>
+            <textarea
+              value={productNote}
+              onChange={(e) => setProductNote(e.target.value)}
+              placeholder="Enter note text"
+              rows={3}
+            />
+          </div>
+        </div>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setAddProductNoteResponse('Error: Not running in iframe');
+              return;
+            }
+            if (!productNote) {
+              setAddProductNoteResponse('Error: Note is required');
+              return;
+            }
+            setAddProductNoteLoading(true);
+            setAddProductNoteResponse('');
+            try {
+              const result = await commands.addProductNote({ note: productNote });
+              setAddProductNoteResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setAddProductNoteResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setAddProductNoteLoading(false);
+            }
+          }}
+          disabled={addProductNoteLoading}
+          className="btn btn--primary"
+        >
+          {addProductNoteLoading ? 'Adding...' : 'Add Note'}
+        </button>
+        {addProductNoteResponse && (
+          <JsonViewer
+            data={addProductNoteResponse}
+            title={addProductNoteResponse.startsWith('Error') ? 'Error' : 'Success'}
+          />
+        )}
+      </CommandSection>
+
+      <CommandSection title="Add Product Fee">
+        <p className="section-description">
+          Adds a fee to the currently active product. Requires a product to be set as active first.
+        </p>
+        <div className="form-group">
+          <div className="form-field">
+            <label>Amount:</label>
+            <input
+              type="number"
+              step="0.01"
+              value={productFeeAmount}
+              onChange={(e) => setProductFeeAmount(e.target.value)}
+              placeholder="0.00"
+            />
+          </div>
+          <div className="form-field">
+            <label>Label:</label>
+            <input
+              type="text"
+              value={productFeeLabel}
+              onChange={(e) => setProductFeeLabel(e.target.value)}
+              placeholder="Fee label"
+            />
+          </div>
+          <div className="form-field">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={productFeeIsPercent}
+                onChange={(e) => setProductFeeIsPercent(e.target.checked)}
+              />
+              <span>Is Percentage</span>
+            </label>
+          </div>
+          <div className="form-field">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={productFeeApplyTaxes}
+                onChange={(e) => setProductFeeApplyTaxes(e.target.checked)}
+              />
+              <span>Apply Taxes</span>
+            </label>
+          </div>
+        </div>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setAddProductFeeResponse('Error: Not running in iframe');
+              return;
+            }
+            if (!productFeeAmount) {
+              setAddProductFeeResponse('Error: Amount is required');
+              return;
+            }
+            setAddProductFeeLoading(true);
+            setAddProductFeeResponse('');
+            try {
+              const result = await commands.addProductFee({
+                amount: parseFloat(productFeeAmount) || 0,
+                isPercent: productFeeIsPercent,
+                label: productFeeLabel,
+                applyTaxes: productFeeApplyTaxes
+              });
+              setAddProductFeeResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setAddProductFeeResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setAddProductFeeLoading(false);
+            }
+          }}
+          disabled={addProductFeeLoading}
+          className="btn btn--primary"
+        >
+          {addProductFeeLoading ? 'Adding...' : 'Add Fee'}
+        </button>
+        {addProductFeeResponse && (
+          <JsonViewer
+            data={addProductFeeResponse}
+            title={addProductFeeResponse.startsWith('Error') ? 'Error' : 'Success'}
+          />
+        )}
+      </CommandSection>
+
+      <CommandSection title="Adjust Inventory">
+        <p className="section-description">
+          Adjusts the inventory/stock level for the currently active product. Requires a product to be set as active first.
+        </p>
+        <div className="form-group">
+          <div className="form-field">
+            <label>Amount:</label>
+            <input
+              type="text"
+              value={inventoryAmount}
+              onChange={(e) => setInventoryAmount(e.target.value)}
+              placeholder="10"
+            />
+          </div>
+          <div className="form-field">
+            <label>Stock Type:</label>
+            <select
+              value={inventoryStockType}
+              onChange={(e) => setInventoryStockType(e.target.value as 'add' | 'subtract' | 'set')}
+            >
+              <option value="add">Add</option>
+              <option value="subtract">Subtract</option>
+              <option value="set">Set</option>
+            </select>
+          </div>
+        </div>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setAdjustInventoryResponse('Error: Not running in iframe');
+              return;
+            }
+            if (!inventoryAmount) {
+              setAdjustInventoryResponse('Error: Amount is required');
+              return;
+            }
+            setAdjustInventoryLoading(true);
+            setAdjustInventoryResponse('');
+            try {
+              const result = await commands.adjustInventory({
+                amount: inventoryAmount,
+                stockType: inventoryStockType
+              });
+              setAdjustInventoryResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setAdjustInventoryResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setAdjustInventoryLoading(false);
+            }
+          }}
+          disabled={adjustInventoryLoading}
+          className="btn btn--primary"
+        >
+          {adjustInventoryLoading ? 'Adjusting...' : 'Adjust Inventory'}
+        </button>
+        {adjustInventoryResponse && (
+          <JsonViewer
+            data={adjustInventoryResponse}
+            title={adjustInventoryResponse.startsWith('Error') ? 'Error' : 'Success'}
           />
         )}
       </CommandSection>

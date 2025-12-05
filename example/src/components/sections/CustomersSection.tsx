@@ -26,6 +26,16 @@ export function CustomersSection({ isInIframe }: CustomersSectionProps) {
   const [addCustomerLoading, setAddCustomerLoading] = useState(false);
   const [addCustomerResponse, setAddCustomerResponse] = useState<string>('');
 
+  // Customer Note
+  const [customerNoteId, setCustomerNoteId] = useState<string>('');
+  const [customerNote, setCustomerNote] = useState<string>('');
+  const [addCustomerNoteLoading, setAddCustomerNoteLoading] = useState(false);
+  const [addCustomerNoteResponse, setAddCustomerNoteResponse] = useState<string>('');
+
+  // Remove Customer from Cart
+  const [removeCustomerLoading, setRemoveCustomerLoading] = useState(false);
+  const [removeCustomerResponse, setRemoveCustomerResponse] = useState<string>('');
+
   const handleGetCustomers = async () => {
     if (!isInIframe) {
       setCustomersError('Error: Not running in iframe');
@@ -233,6 +243,105 @@ export function CustomersSection({ isInIframe }: CustomersSectionProps) {
           <JsonViewer 
             data={addCustomerResponse} 
             title={addCustomerResponse.startsWith('Error') ? 'Error' : 'Success'} 
+          />
+        )}
+      </CommandSection>
+
+      <CommandSection title="Add Customer Note">
+        <p className="section-description">
+          Adds a note to a customer's record.
+        </p>
+        <div className="form-group">
+          <div className="form-field">
+            <label>Customer ID:</label>
+            <input
+              type="text"
+              value={customerNoteId}
+              onChange={(e) => setCustomerNoteId(e.target.value)}
+              placeholder="customer-123"
+            />
+          </div>
+          <div className="form-field">
+            <label>Note:</label>
+            <textarea
+              value={customerNote}
+              onChange={(e) => setCustomerNote(e.target.value)}
+              placeholder="Enter note text"
+              rows={3}
+            />
+          </div>
+        </div>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setAddCustomerNoteResponse('Error: Not running in iframe');
+              return;
+            }
+            if (!customerNoteId) {
+              setAddCustomerNoteResponse('Error: Customer ID is required');
+              return;
+            }
+            if (!customerNote) {
+              setAddCustomerNoteResponse('Error: Note is required');
+              return;
+            }
+            setAddCustomerNoteLoading(true);
+            setAddCustomerNoteResponse('');
+            try {
+              const result = await commands.addCustomerNote({
+                customerId: customerNoteId,
+                note: customerNote
+              });
+              setAddCustomerNoteResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setAddCustomerNoteResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setAddCustomerNoteLoading(false);
+            }
+          }}
+          disabled={addCustomerNoteLoading}
+          className="btn btn--primary"
+        >
+          {addCustomerNoteLoading ? 'Adding...' : 'Add Customer Note'}
+        </button>
+        {addCustomerNoteResponse && (
+          <JsonViewer
+            data={addCustomerNoteResponse}
+            title={addCustomerNoteResponse.startsWith('Error') ? 'Error' : 'Success'}
+          />
+        )}
+      </CommandSection>
+
+      <CommandSection title="Remove Customer from Cart">
+        <p className="section-description">
+          Removes the currently assigned customer from the cart.
+        </p>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setRemoveCustomerResponse('Error: Not running in iframe');
+              return;
+            }
+            setRemoveCustomerLoading(true);
+            setRemoveCustomerResponse('');
+            try {
+              const result = await commands.removeCustomerFromCart();
+              setRemoveCustomerResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setRemoveCustomerResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setRemoveCustomerLoading(false);
+            }
+          }}
+          disabled={removeCustomerLoading}
+          className="btn btn--primary"
+        >
+          {removeCustomerLoading ? 'Removing...' : 'Remove Customer'}
+        </button>
+        {removeCustomerResponse && (
+          <JsonViewer
+            data={removeCustomerResponse}
+            title={removeCustomerResponse.startsWith('Error') ? 'Error' : 'Success'}
           />
         )}
       </CommandSection>

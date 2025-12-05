@@ -91,6 +91,58 @@ await commands.addCartDiscount({
     isPercent: false,
     label: 'Cart Discount'
 });
+
+// Get current context/environment
+const context = await commands.getContext();
+console.log('Current user:', context.userId);
+console.log('Current company:', context.companyName);
+
+// Product Actions
+await commands.addProductNote({ note: 'Customer requested extra packaging' });
+await commands.addProductFee({ amount: 5.00, label: 'Service Fee', applyTaxes: true });
+await commands.adjustInventory({ amount: '10', stockType: 'add' });
+
+// Order Actions
+await commands.addOrderNote({ note: 'Delivery by 3pm' });
+await commands.addCartFee({ amount: 5.00, label: 'Processing Fee' });
+await commands.clearCart();
+await commands.parkOrder();
+await commands.resumeParkedOrder({ orderId: 'order-123' });
+await commands.deleteParkedOrder({ orderId: 'order-123' });
+await commands.reorderActiveOrder();
+await commands.initiateRefund({ orderId: 'order-123' });
+await commands.cashPayment({ amount: 50.00 });
+await commands.tapToPayPayment();
+await commands.terminalPayment();
+await commands.vendaraPayment();
+await commands.partialPayment({ amount: 25.00, isPercent: false });
+
+// Customer Actions
+await commands.addCustomerNote({ customerId: 'customer-123', note: 'VIP customer' });
+await commands.removeCustomerFromCart();
+
+// System Actions
+await commands.goToStationHome();
+await commands.goToPage({ pageId: 'page-123' });
+await commands.openCashDrawer();
+await commands.openPopup({ popupId: 'popup-123' });
+await commands.showNotification({ message: 'Order completed!' });
+await commands.toggleSlideOut({ slideOutId: 'slideout-123' });
+await commands.showConfirmation({ message: 'Are you sure?' });
+await commands.authenticateUser({ roleIds: ['role-123'] });
+await commands.updateCustomerFacingDisplay({ pageId: 'page-123' });
+await commands.switchUser({ mode: 'dialog' });
+await commands.switchUser({ mode: 'role', roleIds: ['role-123'] });
+await commands.switchUser({ mode: 'specific', userId: 'user-123' });
+
+// Integration Actions
+await commands.triggerWebhook({
+    webhookUrl: 'https://example.com/webhook',
+    payloadType: 'json'
+});
+await commands.triggerZapierWebhook({
+    triggerUrl: 'https://hooks.zapier.com/hooks/catch/123456/abcdef'
+});
 ```
 
 ## Testing in an Iframe

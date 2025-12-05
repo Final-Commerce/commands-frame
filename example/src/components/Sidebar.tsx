@@ -7,6 +7,11 @@ export type SectionId =
   | 'products'
   | 'customers'
   | 'cart'
+  | 'orders'
+  | 'refunds'
+  | 'payments'
+  | 'system'
+  | 'integration'
   | 'examples';
 
 interface SidebarProps {
@@ -25,7 +30,12 @@ const sections: Section[] = [
   { id: 'categories', label: 'Categories' },
   { id: 'products', label: 'Products' },
   { id: 'customers', label: 'Customers' },
-  { id: 'cart', label: 'Cart Operations' },
+  { id: 'cart', label: 'Cart' },
+  { id: 'orders', label: 'Orders' },
+  { id: 'refunds', label: 'Refunds' },
+  { id: 'payments', label: 'Payments' },
+  { id: 'system', label: 'System' },
+  { id: 'integration', label: 'Integration' },
   { id: 'examples', label: 'Examples' },
 ];
 

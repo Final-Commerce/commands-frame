@@ -26,18 +26,61 @@ The library provides a `commands` namespace object containing all available acti
 
 ### Available Actions
 
+#### Data Retrieval
 - **[getCustomers](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-customers/README.md)** - Retrieve a list of customers from the parent application
 - **[getProducts](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-products/README.md)** - Retrieve a list of products from the parent application
 - **[getCategories](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-categories/README.md)** - Retrieve a list of categories from the parent application
 - **[getProductVariants](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-product-variants/README.md)** - Retrieve all variants for a specific product
-- **[addCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-customer/README.md)** - Add a new customer to the local database
-- **[assignCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/assign-customer/README.md)** - Assign an existing customer to the current session/cart
-- **[addCustomSale](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-custom-sale/README.md)** - Add a custom sale item to the cart
+- **[getContext](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-context/README.md)** - Get current environment/context information (user, company, device, station, outlet, build)
+
+#### Product Actions
 - **[setProductActive](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/set-product-active/README.md)** - Set a product variant as the active product
 - **[addProductDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-discount/README.md)** - Add a discount to the currently active product
 - **[addProductToCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-to-cart/README.md)** - Add the currently active product to the cart
+- **[addProductNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-note/README.md)** - Add a note to the currently active product
+- **[addProductFee](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-fee/README.md)** - Add a fee to the currently active product
+- **[adjustInventory](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/adjust-inventory/README.md)** - Adjust inventory/stock level for the currently active product
+
+#### Order Actions
+- **[addCustomSale](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-custom-sale/README.md)** - Add a custom sale item to the cart
 - **[addCartDiscount](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-discount/README.md)** - Add a discount to the entire cart
-- **[getContext](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/get-context/README.md)** - Get current environment/context information (user, company, device, station, outlet, build)
+- **[addOrderNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-order-note/README.md)** - Add a note to the current order/cart
+- **[addCartFee](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-fee/README.md)** - Add a fee to the entire cart
+- **[clearCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/clear-cart/README.md)** - Clear all items from the current cart
+- **[parkOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/park-order/README.md)** - Park (save) the current order for later retrieval
+- **[resumeParkedOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/resume-parked-order/README.md)** - Resume a previously parked order
+- **[deleteParkedOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/delete-parked-order/README.md)** - Delete a parked order
+- **[reorderActiveOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/reorder-active-order/README.md)** - Reorder items from the currently active order into the cart
+- **[initiateRefund](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/initiate-refund/README.md)** - Open the refund UI for an order
+- **[cashPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/cash-payment/README.md)** - Initiate a cash payment
+- **[tapToPayPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/tap-to-pay-payment/README.md)** - Initiate a tap-to-pay payment
+- **[terminalPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/terminal-payment/README.md)** - Initiate a terminal payment
+- **[vendaraPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/vendara-payment/README.md)** - Initiate a Vendara payment
+- **[partialPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/partial-payment/README.md)** - Initiate a partial/split payment
+
+#### Customer Actions
+- **[addCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-customer/README.md)** - Add a new customer to the local database
+- **[assignCustomer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/assign-customer/README.md)** - Assign an existing customer to the current session/cart
+- **[addCustomerNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-customer-note/README.md)** - Add a note to a customer's record
+- **[removeCustomerFromCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/remove-customer-from-cart/README.md)** - Remove the currently assigned customer from the cart
+
+#### System Actions
+- **[goToStationHome](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/go-to-station-home/README.md)** - Navigate to the station home page
+- **[goToPage](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/go-to-page/README.md)** - Navigate to a specific page
+- **[openCashDrawer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/open-cash-drawer/README.md)** - Open the cash drawer
+- **[openPopup](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/open-popup/README.md)** - Open a popup/modal by ID
+- **[showNotification](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/show-notification/README.md)** - Show a notification message
+- **[toggleSlideOut](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/toggle-slide-out/README.md)** - Toggle a slide-out panel
+- **[showConfirmation](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/show-confirmation/README.md)** - Show a confirmation dialog
+- **[authenticateUser](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/authenticate-user/README.md)** - Trigger user authentication for specific roles
+- **[updateCustomerFacingDisplay](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/update-customer-facing-display/README.md)** - Update the customer-facing display to show a specific page
+- **[switchUser](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/switch-user/README.md)** - Switch the current user to a different user
+
+#### Integration Actions
+- **[triggerWebhook](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/trigger-webhook/README.md)** - Trigger a webhook with the specified configuration
+- **[triggerZapierWebhook](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/trigger-zapier-webhook/README.md)** - Trigger a Zapier webhook with the current context data
+
+#### Reference
 - **[exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)** - Example/template function (for reference only)
 
 For detailed documentation on each action, including parameter descriptions, response structures, and usage examples, see the [Actions Documentation](#actions-documentation) section below.
@@ -144,6 +187,138 @@ Adds a discount to the entire cart. Supports both fixed amount and percentage di
 
 Retrieves the current environment/context information from the parent application. Returns user, company, device, station, outlet, and build information including IDs, names, and other relevant details.
 
+### Product Actions
+
+### [addProductNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-note/README.md)
+
+Adds a note to the currently active product in the cart. Requires a product to be set as active first.
+
+### [addProductFee](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-product-fee/README.md)
+
+Adds a fee to the currently active product. Supports both fixed amount and percentage-based fees. Requires a product to be set as active first.
+
+### [adjustInventory](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/adjust-inventory/README.md)
+
+Adjusts the inventory/stock level for the currently active product. Supports adding, subtracting, or setting stock to a specific value.
+
+### Order Actions
+
+### [addOrderNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-order-note/README.md)
+
+Adds a note to the current order/cart.
+
+### [addCartFee](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-cart-fee/README.md)
+
+Adds a fee to the entire cart. Supports both fixed amount and percentage-based fees.
+
+### [clearCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/clear-cart/README.md)
+
+Clears all items from the current cart and resets cart-related state.
+
+### [parkOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/park-order/README.md)
+
+Parks (saves) the current order for later retrieval. The cart is cleared after parking.
+
+### [resumeParkedOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/resume-parked-order/README.md)
+
+Resumes a previously parked order by loading it back into the cart.
+
+### [deleteParkedOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/delete-parked-order/README.md)
+
+Deletes a parked order from the system.
+
+### [reorderActiveOrder](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/reorder-active-order/README.md)
+
+Reorders the items from the currently active order into the cart. Products that are out of stock will not be added.
+
+### [initiateRefund](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/initiate-refund/README.md)
+
+Opens the refund UI for the specified order or the currently active order.
+
+### [cashPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/cash-payment/README.md)
+
+Initiates a cash payment for the current cart. Opens the cash payment UI if change calculation is enabled.
+
+### [tapToPayPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/tap-to-pay-payment/README.md)
+
+Initiates a tap-to-pay payment for the current cart. May request tip if tip functionality is enabled.
+
+### [terminalPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/terminal-payment/README.md)
+
+Initiates a terminal payment for the current cart. May request tip if tip functionality is enabled.
+
+### [vendaraPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/vendara-payment/README.md)
+
+Initiates a Vendara payment for the current cart. May request tip if tip functionality is enabled.
+
+### [partialPayment](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/partial-payment/README.md)
+
+Initiates a partial/split payment for the current cart. Can open the split payment UI or process a payment with a specified amount.
+
+### Customer Actions
+
+### [addCustomerNote](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/add-customer-note/README.md)
+
+Adds a note to a customer's record. Requires the customer ID.
+
+### [removeCustomerFromCart](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/remove-customer-from-cart/README.md)
+
+Removes the currently assigned customer from the cart.
+
+### System Actions
+
+### [goToStationHome](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/go-to-station-home/README.md)
+
+Navigates to the station home page.
+
+### [goToPage](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/go-to-page/README.md)
+
+Navigates to a specific page in the application by page ID.
+
+### [openCashDrawer](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/open-cash-drawer/README.md)
+
+Opens the cash drawer (if connected to a compatible device).
+
+### [openPopup](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/open-popup/README.md)
+
+Opens a popup/modal by ID. If the popup is already open, calling this will close it (toggle behavior).
+
+### [showNotification](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/show-notification/README.md)
+
+Shows a notification message to the user.
+
+### [toggleSlideOut](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/toggle-slide-out/README.md)
+
+Toggles (opens/closes) a slide-out panel by ID.
+
+### [showConfirmation](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/show-confirmation/README.md)
+
+Shows a confirmation dialog to the user. The actual promise resolution (accept/decline) is handled by the parent application's handler system.
+
+### [authenticateUser](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/authenticate-user/README.md)
+
+Triggers user authentication for specific roles. Shows an authentication dialog in the parent application.
+
+### [updateCustomerFacingDisplay](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/update-customer-facing-display/README.md)
+
+Updates the customer-facing display to show a specific page by page ID.
+
+### [switchUser](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/switch-user/README.md)
+
+Switches the current user to a different user. Supports three modes: dialog (select from all users), role (select from users with specific roles), or specific (switch to a specific user).
+
+### Integration Actions
+
+### [triggerWebhook](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/trigger-webhook/README.md)
+
+Triggers a webhook with the specified configuration. Supports custom data, authentication, and various payload types.
+
+### [triggerZapierWebhook](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/trigger-zapier-webhook/README.md)
+
+Triggers a Zapier webhook with the current context data (cart, customer, order, etc.).
+
+### Reference
+
 ### [exampleFunction](https://github.com/Final-Commerce/commands-frame/blob/main/src/actions/example-function/README.md)
 
 An example/template function for reference. See the documentation for the structure to follow when creating new actions.
@@ -181,44 +356,56 @@ All actions are fully typed with TypeScript. Import types for use in your code:
 
 ```typescript
 import type {
-    GetCustomersParams,
-    GetCustomersResponse,
-    GetCustomers,
-    GetProductsParams,
-    GetProductsResponse,
-    GetProducts,
-    GetCategoriesParams,
-    GetCategoriesResponse,
-    GetCategories,
-    GetProductVariantsParams,
-    GetProductVariantsResponse,
-    GetProductVariants,
-    AddCustomerParams,
-    AddCustomerResponse,
-    AddCustomer,
-    AssignCustomerParams,
-    AssignCustomerResponse,
-    AssignCustomer,
-    AddCustomSaleParams,
-    AddCustomSaleResponse,
-    AddCustomSale,
-    SetProductActiveParams,
-    SetProductActiveResponse,
-    SetProductActive,
-    AddProductDiscountParams,
-    AddProductDiscountResponse,
-    AddProductDiscount,
-    AddProductToCartParams,
-    AddProductToCartResponse,
-    AddProductToCart,
-    AddCartDiscountParams,
-    AddCartDiscountResponse,
-    AddCartDiscount,
-    GetContext,
-    GetContextResponse,
-    ExampleFunctionParams,
-    ExampleFunctionResponse,
-    ExampleFunction
+    // Data Retrieval
+    GetCustomersParams, GetCustomersResponse, GetCustomers,
+    GetProductsParams, GetProductsResponse, GetProducts,
+    GetCategoriesParams, GetCategoriesResponse, GetCategories,
+    GetProductVariantsParams, GetProductVariantsResponse, GetProductVariants,
+    GetContext, GetContextResponse,
+    // Product Actions
+    SetProductActiveParams, SetProductActiveResponse, SetProductActive,
+    AddProductDiscountParams, AddProductDiscountResponse, AddProductDiscount,
+    AddProductToCartParams, AddProductToCartResponse, AddProductToCart,
+    AddProductNoteParams, AddProductNoteResponse, AddProductNote,
+    AddProductFeeParams, AddProductFeeResponse, AddProductFee,
+    AdjustInventoryParams, AdjustInventoryResponse, AdjustInventory,
+    // Order Actions
+    AddCustomSaleParams, AddCustomSaleResponse, AddCustomSale,
+    AddCartDiscountParams, AddCartDiscountResponse, AddCartDiscount,
+    AddOrderNoteParams, AddOrderNoteResponse, AddOrderNote,
+    AddCartFeeParams, AddCartFeeResponse, AddCartFee,
+    ClearCartResponse, ClearCart,
+    ParkOrderResponse, ParkOrder,
+    ResumeParkedOrderParams, ResumeParkedOrderResponse, ResumeParkedOrder,
+    DeleteParkedOrderParams, DeleteParkedOrderResponse, DeleteParkedOrder,
+    ReorderActiveOrderResponse, ReorderActiveOrder,
+    InitiateRefundParams, InitiateRefundResponse, InitiateRefund,
+    CashPaymentParams, CashPaymentResponse, CashPayment,
+    TapToPayPaymentParams, TapToPayPaymentResponse, TapToPayPayment,
+    TerminalPaymentParams, TerminalPaymentResponse, TerminalPayment,
+    VendaraPaymentParams, VendaraPaymentResponse, VendaraPayment,
+    PartialPaymentParams, PartialPaymentResponse, PartialPayment,
+    // Customer Actions
+    AddCustomerParams, AddCustomerResponse, AddCustomer,
+    AssignCustomerParams, AssignCustomerResponse, AssignCustomer,
+    AddCustomerNoteParams, AddCustomerNoteResponse, AddCustomerNote,
+    RemoveCustomerFromCartResponse, RemoveCustomerFromCart,
+    // System Actions
+    GoToStationHomeResponse, GoToStationHome,
+    GoToPageParams, GoToPageResponse, GoToPage,
+    OpenCashDrawerResponse, OpenCashDrawer,
+    OpenPopupParams, OpenPopupResponse, OpenPopup,
+    ShowNotificationParams, ShowNotificationResponse, ShowNotification,
+    ToggleSlideOutParams, ToggleSlideOutResponse, ToggleSlideOut,
+    ShowConfirmationParams, ShowConfirmationResponse, ShowConfirmation,
+    AuthenticateUserParams, AuthenticateUserResponse, AuthenticateUser,
+    UpdateCustomerFacingDisplayParams, UpdateCustomerFacingDisplayResponse, UpdateCustomerFacingDisplay,
+    SwitchUserParams, SwitchUserResponse, SwitchUser,
+    // Integration Actions
+    TriggerWebhookParams, TriggerWebhookResponse, TriggerWebhook,
+    TriggerZapierWebhookParams, TriggerZapierWebhookResponse, TriggerZapierWebhook,
+    // Reference
+    ExampleFunctionParams, ExampleFunctionResponse, ExampleFunction
 } from '@final-commerce/commands-frame';
 ```
 

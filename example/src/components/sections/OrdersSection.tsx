@@ -23,9 +23,6 @@ export function OrdersSection({ isInIframe }: OrdersSectionProps) {
   const [deleteParkedOrderLoading, setDeleteParkedOrderLoading] = useState(false);
   const [deleteParkedOrderResponse, setDeleteParkedOrderResponse] = useState<string>('');
 
-  // Reorder Active Order
-  const [reorderLoading, setReorderLoading] = useState(false);
-  const [reorderResponse, setReorderResponse] = useState<string>('');
 
   // Get Orders
   const [ordersStatus, setOrdersStatus] = useState<string>('');
@@ -171,40 +168,6 @@ export function OrdersSection({ isInIframe }: OrdersSectionProps) {
         )}
       </CommandSection>
 
-      {/* Reorder Active Order */}
-      <CommandSection title="Reorder Active Order">
-        <p className="section-description">
-          Reorders the currently active order by adding its line items back to the cart.
-        </p>
-        <button
-          onClick={async () => {
-            if (!isInIframe) {
-              setReorderResponse('Error: Not running in iframe');
-              return;
-            }
-            setReorderLoading(true);
-            setReorderResponse('');
-            try {
-              const result = await commands.reorderActiveOrder();
-              setReorderResponse(JSON.stringify(result, null, 2));
-            } catch (error) {
-              setReorderResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            } finally {
-              setReorderLoading(false);
-            }
-          }}
-          disabled={reorderLoading}
-          className="btn btn--primary"
-        >
-          {reorderLoading ? 'Reordering...' : 'Reorder Active Order'}
-        </button>
-        {reorderResponse && (
-          <JsonViewer
-            data={reorderResponse}
-            title={reorderResponse.startsWith('Error') ? 'Error' : 'Success'}
-          />
-        )}
-      </CommandSection>
 
       {/* Get Orders */}
       <CommandSection title="Get Orders">

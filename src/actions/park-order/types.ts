@@ -1,6 +1,7 @@
 // Park Order Types
 export interface ParkOrderResponse {
     success: boolean;
+    order: any; // ActiveOrder
     timestamp: string;
 }
 

@@ -10,7 +10,7 @@ import type {
     SetRefundLineItemQuantityResponse
 } from "./types";
 
-export const setRefundLineItemQuantity: SetRefundLineItemQuantity = async (params: SetRefundLineItemQuantityParams): Promise<SetRefundLineItemQuantityResponse> => {
+export const setRefundLineItemQuantity: SetRefundLineItemQuantity = async (params?: SetRefundLineItemQuantityParams): Promise<SetRefundLineItemQuantityResponse> => {
     return await commandsFrameClient.call<SetRefundLineItemQuantityParams, SetRefundLineItemQuantityResponse>("setRefundLineItemQuantity", params);
 };
 

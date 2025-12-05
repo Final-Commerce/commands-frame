@@ -25,7 +25,6 @@ import { clearCart } from "./actions/clear-cart/action";
 import { parkOrder } from "./actions/park-order/action";
 import { resumeParkedOrder } from "./actions/resume-parked-order/action";
 import { deleteParkedOrder } from "./actions/delete-parked-order/action";
-import { reorderActiveOrder } from "./actions/reorder-active-order/action";
 import { initiateRefund } from "./actions/initiate-refund/action";
 import { cashPayment } from "./actions/cash-payment/action";
 import { tapToPayPayment } from "./actions/tap-to-pay-payment/action";
@@ -58,6 +57,7 @@ import { resetRefundDetails } from "./actions/reset-refund-details/action";
 import { calculateRefundTotal } from "./actions/calculate-refund-total/action";
 import { getRemainingRefundableQuantities } from "./actions/get-remaining-refundable-quantities/action";
 import { processPartialRefund } from "./actions/process-partial-refund/action";
+import { getCurrentCart } from "./actions/get-current-cart/action";
 
 // Export actions as commands object
 export const commands = {
@@ -87,7 +87,6 @@ export const commands = {
     parkOrder,
     resumeParkedOrder,
     deleteParkedOrder,
-    reorderActiveOrder,
     initiateRefund,
     cashPayment,
     tapToPayPayment,
@@ -120,7 +119,8 @@ export const commands = {
     resetRefundDetails,
     calculateRefundTotal,
     getRemainingRefundableQuantities,
-    processPartialRefund
+    processPartialRefund,
+    getCurrentCart
 } as const;
 
 // Export types from action folders (only Params, Response, and Function types)
@@ -235,6 +235,11 @@ export type {
 } from "./actions/process-partial-refund/types";
 
 export type {
+    GetCurrentCart,
+    GetCurrentCartResponse
+} from "./actions/get-current-cart/types";
+
+export type {
     SetProductActive,
     SetProductActiveParams,
     SetProductActiveResponse
@@ -307,10 +312,6 @@ export type {
     DeleteParkedOrderParams,
     DeleteParkedOrderResponse
 } from "./actions/delete-parked-order/types";
-export type {
-    ReorderActiveOrder,
-    ReorderActiveOrderResponse
-} from "./actions/reorder-active-order/types";
 export type {
     InitiateRefund,
     InitiateRefundParams,

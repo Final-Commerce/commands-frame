@@ -42,6 +42,10 @@ export function CartSection({ isInIframe }: CartSectionProps) {
   const [clearCartLoading, setClearCartLoading] = useState(false);
   const [clearCartResponse, setClearCartResponse] = useState<string>('');
 
+  // Get Current Cart
+  const [getCurrentCartLoading, setGetCurrentCartLoading] = useState(false);
+  const [getCurrentCartResponse, setGetCurrentCartResponse] = useState<string>('');
+
   const handleAddCustomSale = async () => {
     if (!isInIframe) {
       setCustomSaleResponse('Error: Not running in iframe');
@@ -414,6 +418,41 @@ export function CartSection({ isInIframe }: CartSectionProps) {
           <JsonViewer
             data={clearCartResponse}
             title={clearCartResponse.startsWith('Error') ? 'Error' : 'Success'}
+          />
+        )}
+      </CommandSection>
+
+      {/* Get Current Cart */}
+      <CommandSection title="Get Current Cart">
+        <p className="section-description">
+          Retrieves the complete current cart object including products, custom sales, totals, discounts, fees, and customer information.
+        </p>
+        <button
+          onClick={async () => {
+            if (!isInIframe) {
+              setGetCurrentCartResponse('Error: Not running in iframe');
+              return;
+            }
+            setGetCurrentCartLoading(true);
+            setGetCurrentCartResponse('');
+            try {
+              const result = await commands.getCurrentCart();
+              setGetCurrentCartResponse(JSON.stringify(result, null, 2));
+            } catch (error) {
+              setGetCurrentCartResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            } finally {
+              setGetCurrentCartLoading(false);
+            }
+          }}
+          disabled={getCurrentCartLoading}
+          className="btn btn--primary"
+        >
+          {getCurrentCartLoading ? 'Loading...' : 'Get Current Cart'}
+        </button>
+        {getCurrentCartResponse && (
+          <JsonViewer
+            data={getCurrentCartResponse}
+            title={getCurrentCartResponse.startsWith('Error') ? 'Error' : 'Success'}
           />
         )}
       </CommandSection>

@@ -109,7 +109,6 @@ await commands.clearCart();
 await commands.parkOrder();
 await commands.resumeParkedOrder({ orderId: 'order-123' });
 await commands.deleteParkedOrder({ orderId: 'order-123' });
-await commands.reorderActiveOrder();
 await commands.initiateRefund({ orderId: 'order-123' });
 await commands.cashPayment({ amount: 50.00 });
 await commands.tapToPayPayment();

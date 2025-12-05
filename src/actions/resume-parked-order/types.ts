@@ -5,7 +5,7 @@ export interface ResumeParkedOrderParams {
 
 export interface ResumeParkedOrderResponse {
     success: boolean;
-    orderId: string;
+    order: any; // ActiveOrder
     timestamp: string;
 }
 

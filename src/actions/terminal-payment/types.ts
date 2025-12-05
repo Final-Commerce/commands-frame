@@ -7,6 +7,7 @@ export interface TerminalPaymentResponse {
     success: boolean;
     amount: number | null;
     paymentType: string;
+    order: any | null; // ActiveOrder | null
     timestamp: string;
 }
 

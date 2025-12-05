@@ -10,6 +10,7 @@ export interface PartialPaymentResponse {
     amount?: number;
     isPercent?: boolean;
     openUI: boolean;
+    order: any | null; // ActiveOrder | null (null for split payments until final payment)
     timestamp: string;
 }
 

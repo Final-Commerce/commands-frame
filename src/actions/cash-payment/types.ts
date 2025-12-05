@@ -9,6 +9,7 @@ export interface CashPaymentResponse {
     amount: number;
     openChangeCalculator: boolean;
     paymentType: string;
+    order: any | null; // ActiveOrder | null
     timestamp: string;
 }
 

@@ -18,9 +18,9 @@ Retrieves line items and custom sales from an order, along with calculated remai
 | :----------------------------- | :------------------------ | :---------------------------------------- |
 | `success`                      | `boolean`                 | `true` if the line items were retrieved successfully. |
 | `orderId`                      | `string`                  | The ID of the order.                      |
-| `lineItems`                    | `LineItem[]`              | Array of line items in the order.         |
+| `lineItems`                    | `LineItem[]`              | Array of line items in the order. Each line item includes a `key` field (internalId \|\| variantId \|\| productId) that should be used for refund operations. |
 | `customSales`                  | `CustomSale[]`            | Array of custom sales in the order.      |
-| `remainingQuantities`          | `Record<string, number>`  | Map of item keys to remaining refundable quantities. |
+| `remainingQuantities`          | `Record<string, number>`  | Map of item keys to remaining refundable quantities. Keys match the `key` field from lineItems. |
 | `remainingCustomSalesQuantities` | `Record<string, number>`  | Map of custom sale IDs to remaining refundable quantities. |
 | `timestamp`                    | `string`                  | ISO date string of when the action occurred. |
 
@@ -35,13 +35,31 @@ try {
     orderId: 'order-123'
   });
   console.log('Line items:', result);
+  
+  // Each line item includes a 'key' field that should be used for refund operations
+  if (result.lineItems.length > 0) {
+    const firstItem = result.lineItems[0];
+    console.log('Item key for refund operations:', firstItem.key); // Use this key for setRefundStockAction
+    console.log('Remaining refundable quantity:', result.remainingQuantities[firstItem.key]);
+  }
+  
   // Expected output:
   // {
   //   success: true,
   //   orderId: 'order-123',
-  //   lineItems: [...],
+  //   lineItems: [
+  //     {
+  //       key: 'fe1b041c-b48a-44ac-9214-a45cd18f0dfd', // Use this for refund operations
+  //       internalId: 'fe1b041c-b48a-44ac-9214-a45cd18f0dfd',
+  //       variantId: '69308fb4f6f3e98279da9c6e',
+  //       productId: '691df9c6c478bada1fb23d38',
+  //       name: 'Final Juice',
+  //       quantity: 2,
+  //       ...
+  //     }
+  //   ],
   //   customSales: [...],
-  //   remainingQuantities: { 'item-key-1': 2, 'item-key-2': 0 },
+  //   remainingQuantities: { 'fe1b041c-b48a-44ac-9214-a45cd18f0dfd': 2 },
   //   remainingCustomSalesQuantities: { 'custom-sale-1': 1 },
   //   timestamp: '2023-10-27T10:00:00.000Z'
   // }

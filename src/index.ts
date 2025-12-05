@@ -49,8 +49,6 @@ import { switchUser } from "./actions/switch-user/action";
 import { triggerWebhook } from "./actions/trigger-webhook/action";
 import { triggerZapierWebhook } from "./actions/trigger-zapier-webhook/action";
 import { getLineItemsByOrder } from "./actions/get-line-items-by-order/action";
-import { setRefundLineItemQuantity } from "./actions/set-refund-line-item-quantity/action";
-import { setRefundCustomSaleQuantity } from "./actions/set-refund-custom-sale-quantity/action";
 import { setRefundStockAction } from "./actions/set-refund-stock-action/action";
 import { selectAllRefundItems } from "./actions/select-all-refund-items/action";
 import { resetRefundDetails } from "./actions/reset-refund-details/action";
@@ -112,8 +110,6 @@ export const commands = {
     triggerZapierWebhook,
     // Refund Actions
     getLineItemsByOrder,
-    setRefundLineItemQuantity,
-    setRefundCustomSaleQuantity,
     setRefundStockAction,
     selectAllRefundItems,
     resetRefundDetails,
@@ -189,18 +185,6 @@ export type {
     GetLineItemsByOrderParams,
     GetLineItemsByOrderResponse
 } from "./actions/get-line-items-by-order/types";
-
-export type {
-    SetRefundLineItemQuantity,
-    SetRefundLineItemQuantityParams,
-    SetRefundLineItemQuantityResponse
-} from "./actions/set-refund-line-item-quantity/types";
-
-export type {
-    SetRefundCustomSaleQuantity,
-    SetRefundCustomSaleQuantityParams,
-    SetRefundCustomSaleQuantityResponse
-} from "./actions/set-refund-custom-sale-quantity/types";
 
 export type {
     SetRefundStockAction,

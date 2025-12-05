@@ -27,11 +27,8 @@ None. Uses current refund details from Redux state.
 import { commands } from '@final-commerce/commands-frame';
 
 try {
-  // First, set some items to refund
-  await commands.setRefundLineItemQuantity({
-    itemKey: 'variant-id-123',
-    quantity: 2
-  });
+  // First, select items to refund (e.g., using selectAllRefundItems or other refund selection methods)
+  await commands.selectAllRefundItems();
 
   // Calculate the refund total
   const result = await commands.calculateRefundTotal();

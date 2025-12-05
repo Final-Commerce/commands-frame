@@ -1,6 +1,6 @@
 // Set Refund Stock Action Types
 export interface SetRefundStockActionParams {
-    itemKey: string; // internalId or variantId
+    itemKey: string; // The 'key' field from getLineItemsByOrder response (internalId || variantId || productId)
     action: 'RESTOCK' | 'REFUND_DAMAGE';
 }
 

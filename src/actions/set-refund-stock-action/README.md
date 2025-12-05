@@ -8,7 +8,7 @@ Sets the stock handling option for a refunded line item (restock or mark as dama
 
 | Parameter | Type                      | Required | Description                                                              |
 | :-------- | :------------------------ | :------- | :----------------------------------------------------------------------- |
-| `itemKey` | `string`                  | `true`   | The internal ID or variant ID of the line item.                          |
+| `itemKey` | `string`                  | `true`   | The item key from `getLineItemsByOrder` response. Use the `key` field from lineItems (or `internalId`/`variantId`/`productId`). |
 | `action`  | `'RESTOCK' \| 'REFUND_DAMAGE'` | `true`   | The stock handling action: 'RESTOCK' to return to stock, 'REFUND_DAMAGE' to mark as damaged. |
 
 ## Response
@@ -28,23 +28,31 @@ Sets the stock handling option for a refunded line item (restock or mark as dama
 import { commands } from '@final-commerce/commands-frame';
 
 try {
+  // First, get line items to find the item key
+  const lineItemsResult = await commands.getLineItemsByOrder({
+    orderId: 'order-123'
+  });
+  
+  // Use the 'key' field from the line item
+  const itemKey = lineItemsResult.lineItems[0].key;
+  
   // Set stock action to restock
   const result = await commands.setRefundStockAction({
-    itemKey: 'variant-id-123',
+    itemKey: itemKey, // Use the 'key' field from getLineItemsByOrder
     action: 'RESTOCK'
   });
   console.log('Stock action set:', result);
   // Expected output:
   // {
   //   success: true,
-  //   itemKey: 'variant-id-123',
+  //   itemKey: 'fe1b041c-b48a-44ac-9214-a45cd18f0dfd',
   //   action: 'RESTOCK',
   //   timestamp: '2023-10-27T10:00:00.000Z'
   // }
 
   // Set stock action to mark as damaged
   await commands.setRefundStockAction({
-    itemKey: 'variant-id-123',
+    itemKey: itemKey,
     action: 'REFUND_DAMAGE'
   });
 

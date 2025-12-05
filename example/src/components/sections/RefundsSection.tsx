@@ -25,18 +25,6 @@ export function RefundsSection({ isInIframe }: RefundsSectionProps) {
   const [getLineItemsLoading, setGetLineItemsLoading] = useState(false);
   const [getLineItemsResponse, setGetLineItemsResponse] = useState<string>('');
 
-  // Set Refund Line Item Quantity
-  const [refundItemKey, setRefundItemKey] = useState<string>('');
-  const [refundItemQuantity, setRefundItemQuantity] = useState<string>('0');
-  const [setRefundQuantityLoading, setSetRefundQuantityLoading] = useState(false);
-  const [setRefundQuantityResponse, setSetRefundQuantityResponse] = useState<string>('');
-
-  // Set Refund Custom Sale Quantity
-  const [refundCustomSaleId, setRefundCustomSaleId] = useState<string>('');
-  const [refundCustomSaleQuantity, setRefundCustomSaleQuantity] = useState<string>('0');
-  const [setRefundCustomSaleLoading, setSetRefundCustomSaleLoading] = useState(false);
-  const [setRefundCustomSaleResponse, setSetRefundCustomSaleResponse] = useState<string>('');
-
   // Set Refund Stock Action
   const [stockActionItemKey, setStockActionItemKey] = useState<string>('');
   const [stockAction, setStockAction] = useState<'RESTOCK' | 'REFUND_DAMAGE'>('RESTOCK');
@@ -210,143 +198,19 @@ export function RefundsSection({ isInIframe }: RefundsSectionProps) {
         )}
       </CommandSection>
 
-      {/* Set Refund Line Item Quantity */}
-      <CommandSection title="Set Refund Line Item Quantity">
-        <p className="section-description">
-          Sets the quantity of a line item to include in the refund.
-        </p>
-        <div className="form-group">
-          <div className="form-field">
-            <label>Item Key (internalId or variantId):</label>
-            <input
-              type="text"
-              value={refundItemKey}
-              onChange={(e) => setRefundItemKey(e.target.value)}
-              placeholder="variant-id-123"
-            />
-          </div>
-          <div className="form-field">
-            <label>Quantity:</label>
-            <input
-              type="number"
-              value={refundItemQuantity}
-              onChange={(e) => setRefundItemQuantity(e.target.value)}
-              placeholder="0"
-            />
-          </div>
-        </div>
-        <button
-          onClick={async () => {
-            if (!isInIframe) {
-              setSetRefundQuantityResponse('Error: Not running in iframe');
-              return;
-            }
-            if (!refundItemKey) {
-              setSetRefundQuantityResponse('Error: Item key is required');
-              return;
-            }
-            setSetRefundQuantityLoading(true);
-            setSetRefundQuantityResponse('');
-            try {
-              const result = await commands.setRefundLineItemQuantity({
-                itemKey: refundItemKey,
-                quantity: parseInt(refundItemQuantity) || 0
-              });
-              setSetRefundQuantityResponse(JSON.stringify(result, null, 2));
-            } catch (error) {
-              setSetRefundQuantityResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            } finally {
-              setSetRefundQuantityLoading(false);
-            }
-          }}
-          disabled={setRefundQuantityLoading}
-          className="btn btn--primary"
-        >
-          {setRefundQuantityLoading ? 'Setting...' : 'Set Quantity'}
-        </button>
-        {setRefundQuantityResponse && (
-          <JsonViewer
-            data={setRefundQuantityResponse}
-            title={setRefundQuantityResponse.startsWith('Error') ? 'Error' : 'Success'}
-          />
-        )}
-      </CommandSection>
-
-      {/* Set Refund Custom Sale Quantity */}
-      <CommandSection title="Set Refund Custom Sale Quantity">
-        <p className="section-description">
-          Sets the quantity of a custom sale to include in the refund.
-        </p>
-        <div className="form-group">
-          <div className="form-field">
-            <label>Custom Sale ID:</label>
-            <input
-              type="text"
-              value={refundCustomSaleId}
-              onChange={(e) => setRefundCustomSaleId(e.target.value)}
-              placeholder="custom-sale-id-123"
-            />
-          </div>
-          <div className="form-field">
-            <label>Quantity:</label>
-            <input
-              type="number"
-              value={refundCustomSaleQuantity}
-              onChange={(e) => setRefundCustomSaleQuantity(e.target.value)}
-              placeholder="0"
-            />
-          </div>
-        </div>
-        <button
-          onClick={async () => {
-            if (!isInIframe) {
-              setSetRefundCustomSaleResponse('Error: Not running in iframe');
-              return;
-            }
-            if (!refundCustomSaleId) {
-              setSetRefundCustomSaleResponse('Error: Custom sale ID is required');
-              return;
-            }
-            setSetRefundCustomSaleLoading(true);
-            setSetRefundCustomSaleResponse('');
-            try {
-              const result = await commands.setRefundCustomSaleQuantity({
-                customSaleId: refundCustomSaleId,
-                quantity: parseInt(refundCustomSaleQuantity) || 0
-              });
-              setSetRefundCustomSaleResponse(JSON.stringify(result, null, 2));
-            } catch (error) {
-              setSetRefundCustomSaleResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            } finally {
-              setSetRefundCustomSaleLoading(false);
-            }
-          }}
-          disabled={setRefundCustomSaleLoading}
-          className="btn btn--primary"
-        >
-          {setRefundCustomSaleLoading ? 'Setting...' : 'Set Quantity'}
-        </button>
-        {setRefundCustomSaleResponse && (
-          <JsonViewer
-            data={setRefundCustomSaleResponse}
-            title={setRefundCustomSaleResponse.startsWith('Error') ? 'Error' : 'Success'}
-          />
-        )}
-      </CommandSection>
-
       {/* Set Refund Stock Action */}
       <CommandSection title="Set Refund Stock Action">
         <p className="section-description">
-          Sets the stock handling option for a refunded item (restock or mark as damaged).
+          Sets the stock handling option for a refunded item (restock or mark as damaged). Use the <code>key</code> field from the <code>getLineItemsByOrder</code> response (or <code>internalId</code>/<code>variantId</code>).
         </p>
         <div className="form-group">
           <div className="form-field">
-            <label>Item Key:</label>
+            <label>Item Key (from getLineItemsByOrder):</label>
             <input
               type="text"
               value={stockActionItemKey}
               onChange={(e) => setStockActionItemKey(e.target.value)}
-              placeholder="variant-id-123"
+              placeholder="Use 'key' field from lineItems"
             />
           </div>
           <div className="form-field">
